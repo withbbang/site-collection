@@ -1,7 +1,3 @@
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
 import {
   handleMessage,
   handleSetErrorBtn,
@@ -10,20 +6,12 @@ import {
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
 
-export const app = initializeApp({
-  apiKey: process.env.REACT_APP_FIREBASE_APP_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
-});
-
-export const db = getFirestore(app);
-export const analytics = getAnalytics(app);
-export const auth = getAuth(app);
-
+/**
+ * catch 절 처리 모듈
+ * @param {Dispatch<AnyAction>} dispatch 함수형 컴포넌트에서만 선언이 가능하여 파라미터로 전달받음. store action을 일으키기 위해 필요
+ * @param {any} error 에러 객체
+ * @param {function} cb 에러팝입 확인 버튼 추가 콜백함수
+ */
 export function handleSetCatchClause(
   dispatch: Dispatch<AnyAction>,
   error: any,

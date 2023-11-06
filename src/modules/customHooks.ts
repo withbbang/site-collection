@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore';
 import { handleSetIsLoading } from 'middlewares/reduxToolkits/commonSlice';
-import { db, handleSetCatchClause } from './utils';
+import { handleSetCatchClause } from './utils';
+import { db } from './configs';
 
 /**
  * firebase documents 가져오기 커스텀 훅
