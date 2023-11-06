@@ -24,7 +24,7 @@ const commonSlice = createSlice({
   name: 'common',
   initialState,
   reducers: {
-    handleMessage(state: CommonState, action) {
+    handleSetMessage(state: CommonState, action) {
       state.message = action.payload.message;
     },
     handleSetIsLoading(state: CommonState, action) {
@@ -53,7 +53,7 @@ const commonSlice = createSlice({
 });
 
 export const {
-  handleMessage,
+  handleSetMessage,
   handleSetIsLoading,
   handleSetIsErrorPopupActive,
   handleSetIsConfirmPopupActive,

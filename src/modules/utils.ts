@@ -1,5 +1,5 @@
 import {
-  handleMessage,
+  handleSetMessage,
   handleSetErrorBtn,
   handleSetIsErrorPopupActive,
 } from 'middlewares/reduxToolkits/commonSlice';
@@ -17,13 +17,13 @@ export function handleSetCatchClause(
   error: any,
   cb?: () => void,
 ) {
-  dispatch(handleMessage({ message: error.message }));
+  dispatch(handleSetMessage({ message: error.message }));
   dispatch(handleSetIsErrorPopupActive({ isErrorPopupActive: true }));
   dispatch(
     handleSetErrorBtn({
       callback: () => {
         dispatch(handleSetIsErrorPopupActive({ isErrorPopupActive: false }));
-        dispatch(handleMessage({ message: '' }));
+        dispatch(handleSetMessage({ message: '' }));
         cb?.();
       },
     }),
