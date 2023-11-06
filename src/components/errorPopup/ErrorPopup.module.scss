@@ -30,6 +30,7 @@
     > span {
       font-size: 1.3em;
       font-weight: bold;
+      word-break: break-word;
     }
 
     > div {
@@ -52,25 +53,6 @@
 
       > button:hover {
         @include boxShadow(4px 4px 2px 1px rgba(0, 0, 0, 0.2));
-      }
-    }
-  }
-
-  &.night {
-    .modal_body {
-      color: $light;
-      background-color: $dark;
-
-      > div {
-        > button {
-          color: $light;
-          background: $more-dark;
-          @include boxShadow('none');
-        }
-
-        > button:hover {
-          @include boxShadow(4px 4px 2px 1px rgba(0, 0, 0, 0.2));
-        }
       }
     }
   }

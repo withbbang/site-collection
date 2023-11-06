@@ -1,5 +1,14 @@
 import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import {
+  handleMessage,
+  handleSetErrorBtn,
+  handleSetIsErrorPopupActive,
+} from 'middlewares/reduxToolkits/commonSlice';
+import { Dispatch } from 'react';
+import { AnyAction } from 'redux';
 
 export const app = initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_APP_KEY,
@@ -11,4 +20,24 @@ export const app = initializeApp({
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 });
 
+export const db = getFirestore(app);
+export const analytics = getAnalytics(app);
 export const auth = getAuth(app);
+
+export function handleSetCatchClause(
+  dispatch: Dispatch<AnyAction>,
+  error: any,
+  cb?: () => void,
+) {
+  dispatch(handleMessage({ message: error.message }));
+  dispatch(handleSetIsErrorPopupActive({ isErrorPopupActive: true }));
+  dispatch(
+    handleSetErrorBtn({
+      callback: () => {
+        dispatch(handleSetIsErrorPopupActive({ isErrorPopupActive: false }));
+        dispatch(handleMessage({ message: '' }));
+        cb?.();
+      },
+    }),
+  );
+}
