@@ -30,11 +30,10 @@ function ErrorPopup({
 
   return (
     <div
-      className={styles.background}
-      style={
+      className={
         isErrorPopupActive !== undefined && isErrorPopupActive
-          ? { display: '' }
-          : { display: 'none' }
+          ? styles.background
+          : [styles.background, styles.none].join(' ')
       }
     >
       <div className={styles.modalBody}>

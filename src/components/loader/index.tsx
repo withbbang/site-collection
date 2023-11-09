@@ -18,11 +18,10 @@ function mapDispatchToProps(dispatch: (actionFunction: Action<any>) => any) {
 function Loader({ isLoading }: CommonState): React.JSX.Element {
   return (
     <div
-      className={styles.background}
-      style={
+      className={
         isLoading !== undefined && isLoading
-          ? { display: '' }
-          : { display: 'none' }
+          ? styles.background
+          : [styles.background, styles.none].join(' ')
       }
     >
       <span className={styles.loader} />

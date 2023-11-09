@@ -10,6 +10,10 @@
   align-items: center;
   z-index: 10000;
 
+  &.none {
+    display: none;
+  }
+
   .loader {
     width: 200px;
     height: 200px;

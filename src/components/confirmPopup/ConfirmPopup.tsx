@@ -23,11 +23,10 @@ function ConfirmPopup({
 }: CommonState): React.JSX.Element {
   return (
     <div
-      className={styles.background}
-      style={
+      className={
         isConfirmPopupActive !== undefined && isConfirmPopupActive
-          ? { display: '' }
-          : { display: 'none' }
+          ? styles.background
+          : [styles.background, styles.none].join(' ')
       }
     >
       <div className={styles.modalBody}>

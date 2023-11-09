@@ -16,6 +16,7 @@
     "react/button-has-type": "off",
     "react/self-closing-comp": "warn",
     "no-use-before-define": "warn",
+    "no-nested-ternary": "warn",
     "no-empty-pattern": "warn",
     "no-unused-vars": "warn",
     "no-shadow": "warn",
