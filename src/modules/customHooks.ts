@@ -24,7 +24,7 @@ export function useGetDocumentsHook(type: string, cb?: () => any) {
   const [documents, setDocuments] = useState<any[]>([]);
   const q = query(collection(db, type));
 
-  useCallback(() => {
+  useEffect(() => {
     (async () => {
       try {
         dispatch(handleSetIsLoading({ isLoading: true }));
@@ -53,7 +53,7 @@ export function useGetDocumentHook(type: string, id: string, cb?: () => any) {
   const [document, setDocument] = useState<any>(null);
   const d = doc(db, type, id);
 
-  useCallback(() => {
+  useEffect(() => {
     (async () => {
       try {
         dispatch(handleSetIsLoading({ isLoading: true }));
