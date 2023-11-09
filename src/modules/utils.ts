@@ -2,6 +2,9 @@ import {
   handleSetMessage,
   handleSetErrorBtn,
   handleSetIsErrorPopupActive,
+  handleSetIsConfirmPopupActive,
+  handleSetConfirmBtn,
+  handleSetCancelBtn,
 } from 'middlewares/reduxToolkits/commonSlice';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
@@ -39,6 +42,38 @@ export function handleConvertTimestamp(
     : type === 'date'
     ? `${year}-${month}-${day}`
     : `${hours}:${minutes}:${seconds}`;
+}
+
+export function handleSetConfirmPopup(
+  dispatch: Dispatch<AnyAction>,
+  message: string,
+  confirmCb: () => any,
+  cancelCb?: () => any,
+) {
+  dispatch(handleSetMessage({ message }));
+  dispatch(handleSetIsConfirmPopupActive({ isConfirmPopupActive: true }));
+  dispatch(
+    handleSetConfirmBtn({
+      callback: () => {
+        dispatch(
+          handleSetIsConfirmPopupActive({ isConfirmPopupActive: false }),
+        );
+        dispatch(handleSetMessage({ message: '' }));
+        confirmCb();
+      },
+    }),
+  );
+  dispatch(
+    handleSetCancelBtn({
+      callback: () => {
+        dispatch(
+          handleSetIsConfirmPopupActive({ isConfirmPopupActive: false }),
+        );
+        dispatch(handleSetMessage({ message: '' }));
+        cancelCb?.();
+      },
+    }),
+  );
 }
 
 /**

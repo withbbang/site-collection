@@ -89,18 +89,16 @@ export function useAddDocumentHook(
 ) {
   const dispatch = useDispatch();
 
-  const useAddDocument = useCallback(() => {
-    (async () => {
-      try {
-        dispatch(handleSetIsLoading({ isLoading: true }));
-        const { id } = await addDoc(collection(db, type), params);
-        successCb?.(id);
-      } catch (error: any) {
-        handleSetCatchClause(dispatch, error, faliCb);
-      } finally {
-        dispatch(handleSetIsLoading({ isLoading: false }));
-      }
-    })();
+  const useAddDocument = useCallback(async () => {
+    try {
+      dispatch(handleSetIsLoading({ isLoading: true }));
+      const { id } = await addDoc(collection(db, type), params);
+      successCb?.(id);
+    } catch (error: any) {
+      handleSetCatchClause(dispatch, error, faliCb);
+    } finally {
+      dispatch(handleSetIsLoading({ isLoading: false }));
+    }
   }, [type, params, successCb, faliCb]);
 
   return useAddDocument;
@@ -124,18 +122,16 @@ export function useUpdateDocumentHook(
 ) {
   const dispatch = useDispatch();
 
-  const useUpdateDocument = useCallback(() => {
-    (async () => {
-      try {
-        dispatch(handleSetIsLoading({ isLoading: true }));
-        await updateDoc(doc(db, type, id), params);
-        successCb?.();
-      } catch (error: any) {
-        handleSetCatchClause(dispatch, error, faliCb);
-      } finally {
-        dispatch(handleSetIsLoading({ isLoading: false }));
-      }
-    })();
+  const useUpdateDocument = useCallback(async () => {
+    try {
+      dispatch(handleSetIsLoading({ isLoading: true }));
+      await updateDoc(doc(db, type, id), params);
+      successCb?.();
+    } catch (error: any) {
+      handleSetCatchClause(dispatch, error, faliCb);
+    } finally {
+      dispatch(handleSetIsLoading({ isLoading: false }));
+    }
   }, [type, params, successCb, faliCb]);
 
   return useUpdateDocument;
