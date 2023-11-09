@@ -1,6 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+} from 'firebase/firestore';
 import { handleSetIsLoading } from 'middlewares/reduxToolkits/commonSlice';
 import { handleSetCatchClause } from './utils';
 import { db } from './configs';
@@ -11,12 +19,12 @@ import { db } from './configs';
  * @param {function} cb 에러팝업 콜백
  * @returns
  */
-export function handleGetDocuments(type: string, cb?: () => void) {
+export function useGetDocumentsHook(type: string, cb?: () => any) {
   const dispatch = useDispatch();
   const [documents, setDocuments] = useState<any[]>([]);
   const q = query(collection(db, type));
 
-  useEffect(() => {
+  useCallback(() => {
     (async () => {
       try {
         dispatch(handleSetIsLoading({ isLoading: true }));
@@ -40,12 +48,12 @@ export function handleGetDocuments(type: string, cb?: () => void) {
  * @param {function} cb 에러팝업 콜백
  * @returns
  */
-export function handleGetDocument(type: string, id: string, cb?: () => void) {
+export function useGetDocumentHook(type: string, id: string, cb?: () => any) {
   const dispatch = useDispatch();
   const [document, setDocument] = useState<any>(null);
   const d = doc(db, type, id);
 
-  useEffect(() => {
+  useCallback(() => {
     (async () => {
       try {
         dispatch(handleSetIsLoading({ isLoading: true }));
@@ -63,4 +71,72 @@ export function handleGetDocument(type: string, id: string, cb?: () => void) {
   }, [type, id, cb]);
 
   return document;
+}
+
+/**
+ * firebase document 생성하기 커스텀 훅
+ * @param {string} type firebase document attribute name
+ * @param {any} params firebase document parameters
+ * @param {function | undefined} successCb 성공 콜백
+ * @param {function | undefined} faliCb 에러팝업 콜백
+ * @returns
+ */
+export function useAddDocumentHook(
+  type: string,
+  params: any,
+  successCb?: (id?: string) => any,
+  faliCb?: () => any,
+) {
+  const dispatch = useDispatch();
+
+  const useAddDocument = useCallback(() => {
+    (async () => {
+      try {
+        dispatch(handleSetIsLoading({ isLoading: true }));
+        const { id } = await addDoc(collection(db, type), params);
+        successCb?.(id);
+      } catch (error: any) {
+        handleSetCatchClause(dispatch, error, faliCb);
+      } finally {
+        dispatch(handleSetIsLoading({ isLoading: false }));
+      }
+    })();
+  }, [type, params, successCb, faliCb]);
+
+  return useAddDocument;
+}
+
+/**
+ * firebase document 갱신하기 커스텀 훅
+ * @param {string} type firebase document attribute name
+ * @param {string} id firebase document id
+ * @param {any} params firebase document parameters
+ * @param {function | undefined} successCb 성공 콜백
+ * @param {function | undefined} faliCb 에러팝업 콜백
+ * @returns
+ */
+export function useUpdateDocumentHook(
+  type: string,
+  id: string,
+  params: any,
+  successCb?: () => any,
+  faliCb?: () => any,
+) {
+  const dispatch = useDispatch();
+
+  const useUpdateDocument = useCallback(() => {
+    (async () => {
+      try {
+        dispatch(handleSetIsLoading({ isLoading: true }));
+        await updateDoc(doc(db, type, id), params);
+        successCb?.();
+      } catch (error: any) {
+        handleSetCatchClause(dispatch, error, faliCb);
+      } finally {
+        dispatch(handleSetIsLoading({ isLoading: false }));
+      }
+    })();
+  }, [type, params, successCb, faliCb]);
+
+  return useUpdateDocument;
 }
