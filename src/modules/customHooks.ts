@@ -9,7 +9,13 @@ import {
   query,
   updateDoc,
 } from 'firebase/firestore';
-import { handleSetIsLoading } from 'middlewares/reduxToolkits/commonSlice';
+import {
+  handleSetCancelBtn,
+  handleSetConfirmBtn,
+  handleSetIsConfirmPopupActive,
+  handleSetIsLoading,
+  handleSetMessage,
+} from 'middlewares/reduxToolkits/commonSlice';
 import { handleSetCatchClause } from './utils';
 import { db } from './configs';
 
@@ -135,4 +141,47 @@ export function useUpdateDocumentHook(
   }, [type, params, successCb, faliCb]);
 
   return useUpdateDocument;
+}
+
+/**
+ * 확인 팝업 설정
+ * @param {string} message 팝업에 띄울 메세지
+ * @param {function} confirmCb OK 클릭 시 콜백
+ * @param {function | undefined} cancelCb Cancel 클릭 시 콜백
+ */
+export function handleSetConfirmPopup(
+  message: string,
+  confirmCb: () => any,
+  cancelCb?: () => any,
+) {
+  const dispatch = useDispatch();
+
+  const useSetConfirmPopup = useCallback(() => {
+    dispatch(handleSetMessage({ message }));
+    dispatch(handleSetIsConfirmPopupActive({ isConfirmPopupActive: true }));
+    dispatch(
+      handleSetConfirmBtn({
+        callback: () => {
+          dispatch(
+            handleSetIsConfirmPopupActive({ isConfirmPopupActive: false }),
+          );
+          dispatch(handleSetMessage({ message: '' }));
+          confirmCb();
+        },
+      }),
+    );
+    dispatch(
+      handleSetCancelBtn({
+        callback: () => {
+          dispatch(
+            handleSetIsConfirmPopupActive({ isConfirmPopupActive: false }),
+          );
+          dispatch(handleSetMessage({ message: '' }));
+          cancelCb?.();
+        },
+      }),
+    );
+  }, [message, confirmCb, cancelCb]);
+
+  return useSetConfirmPopup;
 }

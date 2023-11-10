@@ -2,9 +2,6 @@ import {
   handleSetMessage,
   handleSetErrorBtn,
   handleSetIsErrorPopupActive,
-  handleSetIsConfirmPopupActive,
-  handleSetConfirmBtn,
-  handleSetCancelBtn,
 } from 'middlewares/reduxToolkits/commonSlice';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
@@ -42,45 +39,6 @@ export function handleConvertTimestamp(
     : type === 'date'
     ? `${year}-${month}-${day}`
     : `${hours}:${minutes}:${seconds}`;
-}
-
-/**
- * 확인 팝업 설정
- * @param {Dispatch<AnyAction>} dispatch 함수형 컴포넌트에서만 선언이 가능하여 파라미터로 전달받음. store action을 일으키기 위해 필요
- * @param {string} message 팝업에 띄울 메세지
- * @param {function} confirmCb OK 클릭 시 콜백
- * @param {function | undefined} cancelCb Cancel 클릭 시 콜백
- */
-export function handleSetConfirmPopup(
-  dispatch: Dispatch<AnyAction>,
-  message: string,
-  confirmCb: () => any,
-  cancelCb?: () => any,
-) {
-  dispatch(handleSetMessage({ message }));
-  dispatch(handleSetIsConfirmPopupActive({ isConfirmPopupActive: true }));
-  dispatch(
-    handleSetConfirmBtn({
-      callback: () => {
-        dispatch(
-          handleSetIsConfirmPopupActive({ isConfirmPopupActive: false }),
-        );
-        dispatch(handleSetMessage({ message: '' }));
-        confirmCb();
-      },
-    }),
-  );
-  dispatch(
-    handleSetCancelBtn({
-      callback: () => {
-        dispatch(
-          handleSetIsConfirmPopupActive({ isConfirmPopupActive: false }),
-        );
-        dispatch(handleSetMessage({ message: '' }));
-        cancelCb?.();
-      },
-    }),
-  );
 }
 
 /**

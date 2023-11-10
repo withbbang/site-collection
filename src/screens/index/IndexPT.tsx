@@ -1,14 +1,17 @@
 import React from 'react';
 import styles from './Index.module.scss';
 
-function IndexPT({}: typeIndexPT): React.JSX.Element {
+function IndexPT({ onClick }: typeIndexPT): React.JSX.Element {
   return (
     <div className={styles.wrap}>
       <h1>Index Page</h1>
+      <button onClick={onClick}>onClick</button>
     </div>
   );
 }
 
-interface typeIndexPT {}
+interface typeIndexPT {
+  onClick: () => void;
+}
 
 export default IndexPT;
