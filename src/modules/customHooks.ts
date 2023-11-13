@@ -149,14 +149,14 @@ export function useUpdateDocumentHook(
  * @param {function} confirmCb OK 클릭 시 콜백
  * @param {function | undefined} cancelCb Cancel 클릭 시 콜백
  */
-export function handleSetConfirmPopup(
+export function useSetConfirmPopup(
   message: string,
   confirmCb: () => any,
   cancelCb?: () => any,
 ) {
   const dispatch = useDispatch();
 
-  const useSetConfirmPopup = useCallback(() => {
+  const setConfirmPopup = useCallback(() => {
     dispatch(handleSetMessage({ message }));
     dispatch(handleSetIsConfirmPopupActive({ isConfirmPopupActive: true }));
     dispatch(
@@ -183,5 +183,5 @@ export function handleSetConfirmPopup(
     );
   }, [message, confirmCb, cancelCb]);
 
-  return useSetConfirmPopup;
+  return setConfirmPopup;
 }

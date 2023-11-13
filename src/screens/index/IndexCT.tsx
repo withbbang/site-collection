@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { CommonState } from 'middlewares/reduxToolkits/commonSlice';
 import {
-  handleSetConfirmPopup,
+  useSetConfirmPopup,
   useAddDocumentHook,
   useGetDocumentsHook,
 } from 'modules/customHooks';
@@ -14,19 +14,18 @@ function IndexCT({}: typeIndexCT): React.JSX.Element {
     { URL: 'http://bread-diagrams.o-r.kr/' },
     () => console.log('successCb'),
   );
-  const useSetConfirmPopup = handleSetConfirmPopup(
+  const handleConfirmPopup = useSetConfirmPopup(
     'Really Do?',
     useAddDocument,
     () => console.log('click cancel'),
   );
 
-  // 로그인 여부 판단 훅
   useEffect(() => {
     console.log(docs);
   }, [docs]);
 
   const onClick = () => {
-    useSetConfirmPopup();
+    handleConfirmPopup();
   };
 
   return <IndexPT onClick={onClick} />;
