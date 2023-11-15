@@ -24,9 +24,10 @@ function ErrorPopup({
     null,
   ) as React.MutableRefObject<HTMLButtonElement | null>;
 
-  useEffect(() => {
-    buttonRef.current?.focus();
-  }, [isErrorPopupActive]);
+  // FIXME: 로그인 필드에서 엔터 누르면 에러 팝업이 바로 꺼진다.
+  // useEffect(() => {
+  //   buttonRef.current?.focus();
+  // }, [isErrorPopupActive]);
 
   return (
     <div

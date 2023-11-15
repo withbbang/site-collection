@@ -5,6 +5,8 @@ export interface CommonState {
   isLoading?: boolean;
   isConfirmPopupActive?: boolean;
   isErrorPopupActive?: boolean;
+  uid?: string;
+  email?: string;
   handleConfirmBtn?: () => void;
   handleCancelBtn?: () => void;
   handleErrorBtn?: () => void;
@@ -15,6 +17,8 @@ export const initialState: CommonState = {
   isLoading: false,
   isErrorPopupActive: false,
   isConfirmPopupActive: false,
+  uid: '',
+  email: '',
   handleConfirmBtn: () => {},
   handleCancelBtn: () => {},
   handleErrorBtn: () => {},
@@ -45,6 +49,10 @@ const commonSlice = createSlice({
     handleSetErrorBtn(state: CommonState, action) {
       state.handleErrorBtn = action.payload.callback;
     },
+    handleSetUserInfo(state: CommonState, { payload: { uid, email } }) {
+      state.uid = uid;
+      state.email = email;
+    },
   },
   // API 리듀서들 비동기 상태값들 한번에 관리하기 위한 extraReducers 모음
   extraReducers: {
@@ -60,6 +68,7 @@ export const {
   handleSetConfirmBtn,
   handleSetCancelBtn,
   handleSetErrorBtn,
+  handleSetUserInfo,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

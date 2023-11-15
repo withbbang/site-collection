@@ -1,3 +1,5 @@
+import { SHA256 } from 'crypto-js';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import {
   handleSetMessage,
   handleSetErrorBtn,
@@ -5,6 +7,7 @@ import {
 } from 'middlewares/reduxToolkits/commonSlice';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
+import { auth } from './configs';
 
 /**
  * 11자리 임의의 문자열 반환 함수
@@ -63,4 +66,25 @@ export function handleSetCatchClause(
       },
     }),
   );
+}
+
+export function handleEncryptValue(value: string) {
+  try {
+    return SHA256(value).toString();
+  } catch (error) {
+    console.error(error);
+    throw Error('Value Encrypting Error');
+  }
+}
+
+export async function handleSignInWithEmailAndPassword(
+  email: string,
+  encryptedPassword: string,
+) {
+  try {
+    return await signInWithEmailAndPassword(auth, email, encryptedPassword);
+  } catch (error: any) {
+    console.error(error);
+    throw Error(error.message);
+  }
 }

@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   addDoc,
   collection,
@@ -15,9 +16,15 @@ import {
   handleSetIsConfirmPopupActive,
   handleSetIsLoading,
   handleSetMessage,
+  handleSetUserInfo,
 } from 'middlewares/reduxToolkits/commonSlice';
-import { handleSetCatchClause } from './utils';
+import {
+  handleEncryptValue,
+  handleSetCatchClause,
+  handleSignInWithEmailAndPassword,
+} from './utils';
 import { db } from './configs';
+import { TypeSignInForm } from './types';
 
 /**
  * firebase documents 가져오기 커스텀 훅
@@ -184,4 +191,61 @@ export function useSetConfirmPopup(
   }, [message, confirmCb, cancelCb]);
 
   return setConfirmPopup;
+}
+
+/**
+ * Sign In 페이지, 기능 커스텀 훅
+ * @param signInForm email, password 필드
+ * @returns
+ */
+export function useCheckValidSignIn(signInForm: TypeSignInForm) {
+  const [form, setForm] = useState<TypeSignInForm>(signInForm);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // email, password onChange 콜백 함수
+  const useInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+
+      setForm((form) => ({ ...form, [name]: value.trim() }));
+    },
+    [signInForm],
+  );
+
+  // Sign In 버튼 콜백 함수
+  const useSignIn = useCallback(async () => {
+    dispatch(handleSetIsLoading({ isLoading: true }));
+    try {
+      if (!form.email) throw Error('Empty Email Field');
+      if (!form.password) throw Error('Empty Password Field');
+
+      const {
+        user: { uid },
+      } = await handleSignInWithEmailAndPassword(
+        form.email,
+        handleEncryptValue(form.password),
+      );
+
+      handleSetUserInfo({ uid, email: form.email });
+      navigate('/', { replace: true });
+    } catch (error: any) {
+      handleSetCatchClause(dispatch, error);
+    } finally {
+      dispatch(handleSetIsLoading({ isLoading: false }));
+    }
+  }, [signInForm]);
+
+  // email, password 엔터 콜백 함수
+  const useKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        e.currentTarget.blur();
+        useSignIn();
+      }
+    },
+    [signInForm],
+  );
+
+  return { form, useInputChange, useSignIn, useKeyDown };
 }

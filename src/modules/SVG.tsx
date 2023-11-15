@@ -1,5 +1,5 @@
 import React from 'react';
-import { typeSVG } from './types';
+import { TypeSVG } from './types';
 
 function SVG({
   type,
@@ -7,7 +7,7 @@ function SVG({
   height,
   fill,
   stroke,
-}: typeSVG): React.JSX.Element {
+}: TypeSVG): React.JSX.Element {
   switch (type) {
     case 'notFound':
       return (
