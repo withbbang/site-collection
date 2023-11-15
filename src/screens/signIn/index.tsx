@@ -38,7 +38,6 @@ function SignIn({ uid }: TypeSignIn): React.JSX.Element {
           <span>Email</span>
           <input
             type="email"
-            name="email"
             value={form.email}
             onChange={useInputChange}
             onKeyDown={useKeyDown}
@@ -48,7 +47,6 @@ function SignIn({ uid }: TypeSignIn): React.JSX.Element {
           <span>Password</span>
           <input
             type="password"
-            name="password"
             value={form.password}
             onChange={useInputChange}
             onKeyDown={useKeyDown}

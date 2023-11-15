@@ -206,9 +206,9 @@ export function useCheckValidSignIn(signInForm: TypeSignInForm) {
   // email, password onChange 콜백 함수
   const useInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
+      const { type, value } = e.target;
 
-      setForm((form) => ({ ...form, [name]: value.trim() }));
+      setForm((form) => ({ ...form, [type]: value.trim() }));
     },
     [signInForm],
   );
