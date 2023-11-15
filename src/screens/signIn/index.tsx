@@ -1,22 +1,13 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { PropState } from 'middlewares/configureReducer';
-import { Action } from '@reduxjs/toolkit';
 import { CommonState } from 'middlewares/reduxToolkits/commonSlice';
 import { useCheckValidSignIn } from 'modules/customHooks';
 import Back from 'components/back/Back';
 import styles from './SignIn.module.scss';
 
-function mapStateToProps(state: PropState): CommonState {
-  return { ...state.common };
-}
-
-function mapDispatchToProps(dispatch: (actionFunction: Action<any>) => any) {
-  return {};
-}
-
-function SignIn({ uid }: TypeSignIn): React.JSX.Element {
+function SignIn(): React.JSX.Element {
+  const uid = useSelector(({ uid }: CommonState) => uid);
   const navigate = useNavigate();
   const { form, useInputChange, useSignIn, useKeyDown } = useCheckValidSignIn({
     email: '',
@@ -60,4 +51,4 @@ function SignIn({ uid }: TypeSignIn): React.JSX.Element {
 
 interface TypeSignIn extends CommonState {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default SignIn;
