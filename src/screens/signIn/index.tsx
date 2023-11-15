@@ -5,7 +5,7 @@ import { PropState } from 'middlewares/configureReducer';
 import { Action } from '@reduxjs/toolkit';
 import { CommonState } from 'middlewares/reduxToolkits/commonSlice';
 import { useCheckValidSignIn } from 'modules/customHooks';
-import SVG from 'modules/SVG';
+import Back from 'components/back/Back';
 import styles from './SignIn.module.scss';
 
 function mapStateToProps(state: PropState): CommonState {
@@ -29,17 +29,9 @@ function SignIn({ uid }: TypeSignIn): React.JSX.Element {
     }
   }, [uid]);
 
-  const handleBack = () => {
-    navigate(-1);
-  };
-
   return (
     <div className={styles.wrap}>
-      <div className={styles.backBtn}>
-        <span onClick={handleBack}>
-          <SVG type="back" width="30px" height="30px" />
-        </span>
-      </div>
+      <Back />
       <div className={styles.innerWrap}>
         <h2>Sign In</h2>
         <div className={styles.inputDiv}>
