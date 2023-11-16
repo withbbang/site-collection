@@ -6,20 +6,6 @@
   justify-content: center;
   @include background($more-light);
 
-  .backBtn {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-
-    > span {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-  }
-
   .innerWrap {
     width: 40%;
     display: flex;
@@ -32,22 +18,6 @@
 
     > h2 {
       margin: 0 0 20px 0;
-    }
-
-    .inputDiv {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 30px;
-
-      > span {
-        margin-right: auto;
-      }
-
-      > input {
-        height: 20px;
-      }
     }
 
     > button {
@@ -63,16 +33,6 @@
   @include mobile {
     .innerWrap {
       width: 70%;
-
-      .inputDiv {
-        flex-direction: column;
-        align-items: unset;
-        justify-self: unset;
-
-        > span {
-          margin-bottom: 5px;
-        }
-      }
     }
   }
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import { TypeKeyValueForm } from 'modules/types';
 import styles from './AuthInput.module.scss';
 
 function AuthInput({
