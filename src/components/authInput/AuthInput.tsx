@@ -1,4 +1,5 @@
 import React from 'react';
+import { handleSetUpperCaseFirstCharacter } from 'modules/utils';
 import styles from './AuthInput.module.scss';
 
 function AuthInput({
@@ -9,7 +10,7 @@ function AuthInput({
 }: TypeAuthInput): React.JSX.Element {
   return (
     <div className={styles.inputDiv}>
-      <span>{label.toUpperCase()}</span>
+      <span>{handleSetUpperCaseFirstCharacter(label)}</span>
       <input
         name={label.toLowerCase()}
         type={label.toLowerCase()}
