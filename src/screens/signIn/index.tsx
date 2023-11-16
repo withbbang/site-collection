@@ -39,13 +39,13 @@ function SignIn({ uid }: TypeSignIn): React.JSX.Element {
       <div className={styles.innerWrap}>
         <h2>Sign In</h2>
         <AuthInput
-          label="email"
+          label={'email'}
           value={form.email}
           useInputChange={useInputChange}
           useEnterKeyDown={useEnterKeyDown}
         />
         <AuthInput
-          label="password"
+          label={'password'}
           value={form.password}
           useInputChange={useInputChange}
           useEnterKeyDown={useEnterKeyDown}
