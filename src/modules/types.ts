@@ -6,6 +6,6 @@ export interface TypeSVG {
   stroke?: string;
 }
 
-export interface TypeInputForm {
+export interface TypeKeyValueForm {
   [key: string]: string;
 }

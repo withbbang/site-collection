@@ -71,6 +71,11 @@ export function handleSetCatchClause(
   );
 }
 
+/**
+ * SHA256 암호화 함수
+ * @param {string} value 암호화할 값
+ * @returns
+ */
 export function handleEncryptValue(value: string) {
   try {
     return SHA256(value).toString();
@@ -80,18 +85,12 @@ export function handleEncryptValue(value: string) {
   }
 }
 
-export async function handleSignInWithEmailAndPassword(
-  email: string,
-  encryptedPassword: string,
-) {
-  try {
-    return await signInWithEmailAndPassword(auth, email, encryptedPassword);
-  } catch (error: any) {
-    console.error(error);
-    throw Error(error.message);
-  }
-}
-
+/**
+ * 회원가입 함수
+ * @param {string} email 유저 이메일
+ * @param {string} encryptedPassword 유저 암호화된 비밀번호
+ * @returns
+ */
 export async function handleCreateUserWithEmailAndPassword(
   email: string,
   encryptedPassword: string,
@@ -100,6 +99,24 @@ export async function handleCreateUserWithEmailAndPassword(
     return await createUserWithEmailAndPassword(auth, email, encryptedPassword);
   } catch (error: any) {
     console.error('error');
+    throw Error(error.message);
+  }
+}
+
+/**
+ * 로그인 함수
+ * @param {string} email 유저 이메일
+ * @param {string} encryptedPassword 유저 암호화된 비밀번호
+ * @returns
+ */
+export async function handleSignInWithEmailAndPassword(
+  email: string,
+  encryptedPassword: string,
+) {
+  try {
+    return await signInWithEmailAndPassword(auth, email, encryptedPassword);
+  } catch (error: any) {
+    console.error(error);
     throw Error(error.message);
   }
 }

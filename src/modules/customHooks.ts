@@ -25,7 +25,7 @@ import {
   handleSignInWithEmailAndPassword,
 } from './utils';
 import { db } from './configs';
-import { TypeInputForm } from './types';
+import { TypeKeyValueForm } from './types';
 
 /**
  * firebase documents 가져오기 커스텀 훅
@@ -194,8 +194,13 @@ export function useSetConfirmPopup(
   return setConfirmPopup;
 }
 
-export function useInputHook(inputForm: TypeInputForm) {
-  const [form, setForm] = useState<TypeInputForm>(inputForm);
+/**
+ * key - value 폼 객체 setting 커스텀 훅
+ * @param {TypeKeyValueForm} keyValueForm key - value 객체
+ * @returns
+ */
+export function useInputHook(keyValueForm: TypeKeyValueForm) {
+  const [form, setForm] = useState<TypeKeyValueForm>(keyValueForm);
 
   // email, password onChange 콜백 함수
   const useInputChange = useCallback(
@@ -204,12 +209,18 @@ export function useInputHook(inputForm: TypeInputForm) {
 
       setForm((prevState) => ({ ...prevState, [name]: value.trim() }));
     },
-    [inputForm],
+    [keyValueForm],
   );
 
   return { form, useInputChange };
 }
 
+/**
+ * 엔터 눌렀을 때 특정 콜백이 동작하도록 하는 동작할 함수
+ * @param {any} value 변하는 key - value 객체
+ * @param {function} cb
+ * @returns
+ */
 export function useEnterKeyDownHook(value: any, cb: () => any) {
   const useEnterKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -224,7 +235,12 @@ export function useEnterKeyDownHook(value: any, cb: () => any) {
   return useEnterKeyDown;
 }
 
-export function useSignUpHook(signUpForm: TypeInputForm) {
+/**
+ * 회원가입 유효성 검사, 회원가입 실행 함수
+ * @param {TypeKeyValueForm} signUpForm sign up에 필요한 input 값들
+ * @returns
+ */
+export function useSignUpHook(signUpForm: TypeKeyValueForm) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -253,7 +269,12 @@ export function useSignUpHook(signUpForm: TypeInputForm) {
   return useSignUp;
 }
 
-export function useSignInHook(signInForm: TypeInputForm) {
+/**
+ * 로그인 유효성 검사, 로그인 실행 함수
+ * @param {TypeKeyValueForm} signUpForm sign in에 필요한 input 값들
+ * @returns
+ */
+export function useSignInHook(signInForm: TypeKeyValueForm) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
