@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Action } from 'redux';
 import { CommonState } from 'middlewares/reduxToolkits/commonSlice';
+import { PropState } from 'middlewares/configureReducer';
 import {
   useEnterKeyDownHook,
   useInputHook,
@@ -10,8 +12,15 @@ import {
 import Back from 'components/back/Back';
 import styles from './SignIn.module.scss';
 
-function SignIn(): React.JSX.Element {
-  const uid = useSelector(({ uid }: CommonState) => uid);
+function mapStateToProps(state: PropState): CommonState {
+  return { ...state.common };
+}
+
+function mapDispatchToProps(dispatch: (actionFunction: Action<any>) => any) {
+  return {};
+}
+
+function SignIn({ uid }: TypeSignIn): React.JSX.Element {
   const navigate = useNavigate();
   const { form, useInputChange } = useInputHook({ email: '', password: '' });
   const useSignIn = useSignInHook(form);
@@ -56,4 +65,4 @@ function SignIn(): React.JSX.Element {
 
 interface TypeSignIn extends CommonState {}
 
-export default SignIn;
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

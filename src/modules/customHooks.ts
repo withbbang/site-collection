@@ -292,7 +292,7 @@ export function useSignInHook(signInForm: TypeKeyValueForm) {
         handleEncryptValue(signInForm.password),
       );
 
-      handleSetUserInfo({ uid, email: signInForm.email });
+      dispatch(handleSetUserInfo({ uid, email: signInForm.email }));
       navigate('/', { replace: true });
     } catch (error: any) {
       handleSetCatchClause(dispatch, error);
