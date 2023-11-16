@@ -202,12 +202,26 @@ export function useInputHook(inputForm: TypeInputForm) {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
 
-      setForm((form) => ({ ...form, [name]: value.trim() }));
+      setForm((prevState) => ({ ...prevState, [name]: value.trim() }));
     },
     [inputForm],
   );
 
   return { form, useInputChange };
+}
+
+export function useEnterKeyDownHook(value: any, cb: () => any) {
+  const useEnterKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        e.currentTarget.blur();
+        cb();
+      }
+    },
+    [value],
+  );
+
+  return useEnterKeyDown;
 }
 
 export function useSignUpHook(signUpForm: TypeInputForm) {
@@ -236,58 +250,28 @@ export function useSignUpHook(signUpForm: TypeInputForm) {
     }
   }, [signUpForm]);
 
-  return { useSignUp };
+  return useSignUp;
 }
 
-export function useEnterKeyDownHook(cb: () => void) {
-  const useEnterKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter') {
-        e.currentTarget.blur();
-        cb();
-      }
-    },
-    [],
-  );
-
-  return useEnterKeyDown;
-}
-
-/**
- * Sign In 페이지, 기능 커스텀 훅
- * @param signInForm email, password 필드
- * @returns
- */
 export function useSignInHook(signInForm: TypeInputForm) {
-  const [form, setForm] = useState<TypeInputForm>(signInForm);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // email, password onChange 콜백 함수
-  const useInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { type, value } = e.target;
-
-      setForm((form) => ({ ...form, [type]: value.trim() }));
-    },
-    [signInForm],
-  );
 
   // Sign In 버튼 콜백 함수
   const useSignIn = useCallback(async () => {
     dispatch(handleSetIsLoading({ isLoading: true }));
     try {
-      if (!form.email) throw Error('Empty Email Field');
-      if (!form.password) throw Error('Empty Password Field');
+      if (!signInForm.email) throw Error('Empty Email Field');
+      if (!signInForm.password) throw Error('Empty Password Field');
 
       const {
         user: { uid },
       } = await handleSignInWithEmailAndPassword(
-        form.email,
-        handleEncryptValue(form.password),
+        signInForm.email,
+        handleEncryptValue(signInForm.password),
       );
 
-      handleSetUserInfo({ uid, email: form.email });
+      handleSetUserInfo({ uid, email: signInForm.email });
       navigate('/', { replace: true });
     } catch (error: any) {
       handleSetCatchClause(dispatch, error);
@@ -296,16 +280,5 @@ export function useSignInHook(signInForm: TypeInputForm) {
     }
   }, [signInForm]);
 
-  // email, password 엔터 콜백 함수
-  const useKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter') {
-        e.currentTarget.blur();
-        useSignIn();
-      }
-    },
-    [signInForm],
-  );
-
-  return { form, useInputChange, useSignIn, useKeyDown };
+  return useSignIn;
 }

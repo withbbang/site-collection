@@ -14,8 +14,8 @@ function SignUp(): React.JSX.Element {
   const uid = useSelector(({ uid }: CommonState) => uid);
   const navigate = useNavigate();
   const { form, useInputChange } = useInputHook({ email: '', password: '' });
-  const { useSignUp } = useSignUpHook(form);
-  const useEnterKeyDown = useEnterKeyDownHook(useSignUp);
+  const useSignUp = useSignUpHook(form);
+  const useEnterKeyDown = useEnterKeyDownHook(form, useSignUp);
 
   useEffect(() => {
     if (uid !== undefined && uid !== null && uid !== '') {
