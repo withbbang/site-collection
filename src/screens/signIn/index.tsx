@@ -10,6 +10,7 @@ import {
   useSignInHook,
 } from 'modules/customHooks';
 import Back from 'components/back/Back';
+import AuthInput from 'components/authInput/AuthInput';
 import styles from './SignIn.module.scss';
 
 function mapStateToProps(state: PropState): CommonState {
@@ -37,26 +38,18 @@ function SignIn({ uid }: TypeSignIn): React.JSX.Element {
       <Back />
       <div className={styles.innerWrap}>
         <h2>Sign In</h2>
-        <div className={styles.inputDiv}>
-          <span>Email</span>
-          <input
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={useInputChange}
-            onKeyDown={useEnterKeyDown}
-          />
-        </div>
-        <div className={styles.inputDiv}>
-          <span>Password</span>
-          <input
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={useInputChange}
-            onKeyDown={useEnterKeyDown}
-          />
-        </div>
+        <AuthInput
+          label="email"
+          value={form.email}
+          useInputChange={useInputChange}
+          useEnterKeyDown={useEnterKeyDown}
+        />
+        <AuthInput
+          label="password"
+          value={form.password}
+          useInputChange={useInputChange}
+          useEnterKeyDown={useEnterKeyDown}
+        />
         <button onClick={useSignIn}>Sign In</button>
       </div>
     </div>
