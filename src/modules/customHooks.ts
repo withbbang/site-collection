@@ -218,7 +218,7 @@ export function useInputHook(keyValueForm: TypeKeyValueForm) {
 /**
  * 엔터 눌렀을 때 특정 콜백이 동작하도록 하는 동작할 함수
  * @param {any} value 변하는 key - value 객체
- * @param {function} cb
+ * @param {function} cb 엔터 눌렀을 때 콜백
  * @returns
  */
 export function useEnterKeyDownHook(value: any, cb: () => any) {
@@ -271,7 +271,7 @@ export function useSignUpHook(signUpForm: TypeKeyValueForm) {
 
 /**
  * 로그인 유효성 검사, 로그인 실행 함수
- * @param {TypeKeyValueForm} signUpForm sign in에 필요한 input 값들
+ * @param {TypeKeyValueForm} signInForm sign in에 필요한 input 값들
  * @returns
  */
 export function useSignInHook(signInForm: TypeKeyValueForm) {
