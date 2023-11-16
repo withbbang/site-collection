@@ -20,7 +20,7 @@ function mapDispatchToProps(dispatch: (actionFunction: Action<any>) => any) {
   return {};
 }
 
-function SignUp({ uid }: typeSignUp): React.JSX.Element {
+function SignUp({ uid }: TypeSignUp): React.JSX.Element {
   const navigate = useNavigate();
   const { form, useInputChange } = useInputHook({ email: '', password: '' });
   const useSignUp = useSignUpHook(form);
@@ -63,6 +63,6 @@ function SignUp({ uid }: typeSignUp): React.JSX.Element {
   );
 }
 
-interface typeSignUp extends CommonState {}
+interface TypeSignUp extends CommonState {}
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
