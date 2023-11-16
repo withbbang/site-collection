@@ -4,6 +4,7 @@ import {
   useSetConfirmPopup,
   useAddDocumentHook,
   useGetDocumentsHook,
+  useSignOutHook,
 } from 'modules/customHooks';
 import IndexPT from './IndexPT';
 
@@ -19,6 +20,7 @@ function IndexCT({}: typeIndexCT): React.JSX.Element {
     useAddDocument,
     () => console.log('click cancel'),
   );
+  const useSignOut = useSignOutHook();
 
   useEffect(() => {
     console.log(docs);
@@ -28,7 +30,11 @@ function IndexCT({}: typeIndexCT): React.JSX.Element {
     handleConfirmPopup();
   };
 
-  return <IndexPT onClick={onClick} />;
+  const handleSignOut = () => {
+    useSignOut();
+  };
+
+  return <IndexPT onClick={onClick} onSignOut={handleSignOut} />;
 }
 
 interface typeIndexCT extends CommonState {}

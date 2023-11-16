@@ -10,6 +10,7 @@ import {
   query,
   updateDoc,
 } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
 import {
   handleSetCancelBtn,
   handleSetConfirmBtn,
@@ -24,7 +25,7 @@ import {
   handleSetCatchClause,
   handleSignInWithEmailAndPassword,
 } from './utils';
-import { db } from './configs';
+import { auth, db } from './configs';
 import { TypeKeyValueForm } from './types';
 
 /**
@@ -302,4 +303,28 @@ export function useSignInHook(signInForm: TypeKeyValueForm) {
   }, [signInForm]);
 
   return useSignIn;
+}
+
+/**
+ * 로그 아웃 함수
+ * @returns
+ */
+export function useSignOutHook() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const useSignOut = useCallback(async () => {
+    dispatch(handleSetIsLoading({ isLoading: true }));
+    try {
+      await signOut(auth);
+      dispatch(handleSetUserInfo({ uid: '', email: '' }));
+      navigate('/', { replace: true });
+    } catch (error) {
+      handleSetCatchClause(dispatch, error);
+    } finally {
+      dispatch(handleSetIsLoading({ isLoading: false }));
+    }
+  }, []);
+
+  return useSignOut;
 }
