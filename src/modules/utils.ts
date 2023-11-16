@@ -1,5 +1,8 @@
 import { SHA256 } from 'crypto-js';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import {
   handleSetMessage,
   handleSetErrorBtn,
@@ -85,6 +88,18 @@ export async function handleSignInWithEmailAndPassword(
     return await signInWithEmailAndPassword(auth, email, encryptedPassword);
   } catch (error: any) {
     console.error(error);
+    throw Error(error.message);
+  }
+}
+
+export async function handleCreateUserWithEmailAndPassword(
+  email: string,
+  encryptedPassword: string,
+) {
+  try {
+    return await createUserWithEmailAndPassword(auth, email, encryptedPassword);
+  } catch (error: any) {
+    console.error('error');
     throw Error(error.message);
   }
 }

@@ -6,7 +6,6 @@ export interface TypeSVG {
   stroke?: string;
 }
 
-export interface TypeSignInForm {
-  email: string;
-  password: string;
+export interface TypeInputForm {
+  [key: string]: string;
 }

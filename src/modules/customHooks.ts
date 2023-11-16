@@ -19,12 +19,13 @@ import {
   handleSetUserInfo,
 } from 'middlewares/reduxToolkits/commonSlice';
 import {
+  handleCreateUserWithEmailAndPassword,
   handleEncryptValue,
   handleSetCatchClause,
   handleSignInWithEmailAndPassword,
 } from './utils';
 import { db } from './configs';
-import { TypeSignInForm } from './types';
+import { TypeInputForm } from './types';
 
 /**
  * firebase documents 가져오기 커스텀 훅
@@ -193,13 +194,72 @@ export function useSetConfirmPopup(
   return setConfirmPopup;
 }
 
+export function useInputHook(inputForm: TypeInputForm) {
+  const [form, setForm] = useState<TypeInputForm>(inputForm);
+
+  // email, password onChange 콜백 함수
+  const useInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+
+      setForm((form) => ({ ...form, [name]: value.trim() }));
+    },
+    [inputForm],
+  );
+
+  return { form, useInputChange };
+}
+
+export function useSignUpHook(signUpForm: TypeInputForm) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // Sign Up 버튼 콜백 함수
+  const useSignUp = useCallback(async () => {
+    dispatch(handleSetIsLoading({ isLoading: true }));
+    try {
+      if (!signUpForm.email) throw Error('Empty Email Field');
+      if (!signUpForm.password) throw Error('Empty Password Field');
+
+      const {
+        user: { uid },
+      } = await handleCreateUserWithEmailAndPassword(
+        signUpForm.email,
+        handleEncryptValue(signUpForm.password),
+      );
+
+      navigate('/sign/in', { replace: true });
+    } catch (error: any) {
+      handleSetCatchClause(dispatch, error);
+    } finally {
+      dispatch(handleSetIsLoading({ isLoading: false }));
+    }
+  }, [signUpForm]);
+
+  return { useSignUp };
+}
+
+export function useEnterKeyDownHook(cb: () => void) {
+  const useEnterKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        e.currentTarget.blur();
+        cb();
+      }
+    },
+    [],
+  );
+
+  return useEnterKeyDown;
+}
+
 /**
  * Sign In 페이지, 기능 커스텀 훅
  * @param signInForm email, password 필드
  * @returns
  */
-export function useCheckValidSignIn(signInForm: TypeSignInForm) {
-  const [form, setForm] = useState<TypeSignInForm>(signInForm);
+export function useSignInHook(signInForm: TypeInputForm) {
+  const [form, setForm] = useState<TypeInputForm>(signInForm);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

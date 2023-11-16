@@ -2,17 +2,20 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { CommonState } from 'middlewares/reduxToolkits/commonSlice';
-import { useSignInHook } from 'modules/customHooks';
+import {
+  useEnterKeyDownHook,
+  useInputHook,
+  useSignUpHook,
+} from 'modules/customHooks';
 import Back from 'components/back/Back';
-import styles from './SignIn.module.scss';
+import styles from './SignUp.module.scss';
 
-function SignIn(): React.JSX.Element {
+function SignUp(): React.JSX.Element {
   const uid = useSelector(({ uid }: CommonState) => uid);
   const navigate = useNavigate();
-  const { form, useInputChange, useSignIn, useKeyDown } = useSignInHook({
-    email: '',
-    password: '',
-  });
+  const { form, useInputChange } = useInputHook({ email: '', password: '' });
+  const { useSignUp } = useSignUpHook(form);
+  const useEnterKeyDown = useEnterKeyDownHook(useSignUp);
 
   useEffect(() => {
     if (uid !== undefined && uid !== null && uid !== '') {
@@ -24,31 +27,33 @@ function SignIn(): React.JSX.Element {
     <div className={styles.wrap}>
       <Back />
       <div className={styles.innerWrap}>
-        <h2>Sign In</h2>
+        <h2>Sign Up</h2>
         <div className={styles.inputDiv}>
           <span>Email</span>
           <input
+            name="email"
             type="email"
             value={form.email}
             onChange={useInputChange}
-            onKeyDown={useKeyDown}
+            onKeyDown={useEnterKeyDown}
           />
         </div>
         <div className={styles.inputDiv}>
           <span>Password</span>
           <input
+            name="password"
             type="password"
             value={form.password}
             onChange={useInputChange}
-            onKeyDown={useKeyDown}
+            onKeyDown={useEnterKeyDown}
           />
         </div>
-        <button onClick={useSignIn}>Sign In</button>
+        <button onClick={useSignUp}>Sign Up</button>
       </div>
     </div>
   );
 }
 
-interface TypeSignIn extends CommonState {}
+interface typeSignUp extends CommonState {}
 
-export default SignIn;
+export default SignUp;
