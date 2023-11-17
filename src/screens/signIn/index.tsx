@@ -41,14 +41,14 @@ function SignIn({ uid }: TypeSignIn): React.JSX.Element {
         <AuthInput
           label={'email'}
           value={form.email}
-          useInputChange={useInputChange}
-          useEnterKeyDown={useEnterKeyDown}
+          onChange={useInputChange}
+          onKeyDown={useEnterKeyDown}
         />
         <AuthInput
           label={'password'}
           value={form.password}
-          useInputChange={useInputChange}
-          useEnterKeyDown={useEnterKeyDown}
+          onChange={useInputChange}
+          onKeyDown={useEnterKeyDown}
         />
         <button onClick={useSignIn}>Sign In</button>
       </div>

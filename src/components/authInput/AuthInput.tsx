@@ -5,8 +5,8 @@ import styles from './AuthInput.module.scss';
 function AuthInput({
   label,
   value,
-  useInputChange,
-  useEnterKeyDown,
+  onChange,
+  onKeyDown,
 }: TypeAuthInput): React.JSX.Element {
   return (
     <div className={styles.inputDiv}>
@@ -15,8 +15,8 @@ function AuthInput({
         name={label.toLowerCase()}
         type={label.toLowerCase()}
         value={value}
-        onChange={useInputChange}
-        onKeyDown={useEnterKeyDown}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
       />
     </div>
   );
@@ -25,8 +25,8 @@ function AuthInput({
 interface TypeAuthInput {
   label: string;
   value: string;
-  useInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  useEnterKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export default AuthInput;
