@@ -10,7 +10,7 @@ import {
   query,
   updateDoc,
 } from 'firebase/firestore';
-import { signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import {
   handleSetCancelBtn,
   handleSetConfirmBtn,
@@ -327,4 +327,28 @@ export function useSignOutHook() {
   }, []);
 
   return useSignOut;
+}
+
+/**
+ * 로그인 판단 여부 커스텀 훅
+ * @returns {boolean}
+ */
+export function useAuthStateChangedHook(): boolean {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    try {
+      onAuthStateChanged(auth, (user) => {
+        if (user) setIsLoggedIn(true);
+        else handleSetCatchClause(dispatch, Error('Sign In Required'));
+      });
+    } catch (error: any) {
+      handleSetCatchClause(dispatch, error);
+    } finally {
+      dispatch(handleSetIsLoading({ isLoading: false }));
+    }
+  }, []);
+
+  return isLoggedIn;
 }

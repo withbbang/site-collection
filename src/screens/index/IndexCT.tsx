@@ -5,10 +5,12 @@ import {
   useAddDocumentHook,
   useGetDocumentsHook,
   useSignOutHook,
+  useAuthStateChangedHook,
 } from 'modules/customHooks';
 import IndexPT from './IndexPT';
 
 function IndexCT({}: typeIndexCT): React.JSX.Element {
+  const isLoggedIn = useAuthStateChangedHook();
   const docs = useGetDocumentsHook('Links');
   const useAddDocument = useAddDocumentHook(
     'Links',
