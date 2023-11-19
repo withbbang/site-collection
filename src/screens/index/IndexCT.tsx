@@ -24,10 +24,6 @@ function IndexCT({}: typeIndexCT): React.JSX.Element {
   );
   const useSignOut = useSignOutHook();
 
-  useEffect(() => {
-    console.log(docs);
-  }, [docs]);
-
   const onClick = () => {
     handleConfirmPopup();
   };
