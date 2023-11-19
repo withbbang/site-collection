@@ -331,18 +331,22 @@ export function useSignOutHook() {
 
 /**
  * 로그인 판단 여부 커스텀 훅
+ * @param {boolean | undefined} uid 유저 고유 id
  * @param {boolean | undefined} isActiveErrorPopup 에러 팝업 노출시킬지 여부
  * @returns {boolean} 로그인 여부
  */
-export function useAuthStateChangedHook(isActiveErrorPopup?: boolean): boolean {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+export function useAuthStateChangedHook(
+  uid?: string,
+  isActiveErrorPopup?: boolean,
+): boolean {
+  const [isSignIn, setIsSignIn] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     try {
       dispatch(handleSetIsLoading({ isLoading: true }));
       onAuthStateChanged(auth, (user) => {
-        if (user) setIsLoggedIn(true);
+        if (user) setIsSignIn(true);
         else if (isActiveErrorPopup) {
           handleSetCatchClause(dispatch, Error('Sign In Required'));
           throw Error('Sign In Required');
@@ -353,7 +357,7 @@ export function useAuthStateChangedHook(isActiveErrorPopup?: boolean): boolean {
     } finally {
       dispatch(handleSetIsLoading({ isLoading: false }));
     }
-  }, []);
+  }, [uid]);
 
-  return isLoggedIn;
+  return isSignIn;
 }

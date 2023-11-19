@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CommonState } from 'middlewares/reduxToolkits/commonSlice';
 import {
   useSetConfirmPopup,
@@ -9,8 +10,10 @@ import {
 } from 'modules/customHooks';
 import IndexPT from './IndexPT';
 
-function IndexCT({}: typeIndexCT): React.JSX.Element {
-  const isLoggedIn = useAuthStateChangedHook();
+function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
+  //FIXME: 로그아웃해도 login 상태값으로 남아있는 현상 수정 필요
+  const isSignIn = useAuthStateChangedHook(uid);
+  const navigate = useNavigate();
   const docs = useGetDocumentsHook('Links');
   const useAddDocument = useAddDocumentHook(
     'Links',
@@ -32,7 +35,23 @@ function IndexCT({}: typeIndexCT): React.JSX.Element {
     useSignOut();
   };
 
-  return <IndexPT onClick={onClick} onSignOut={handleSignOut} />;
+  const handleSignIn = () => {
+    navigate('/sign/in');
+  };
+
+  const handleSignUp = () => {
+    navigate('/sign/up');
+  };
+
+  return (
+    <IndexPT
+      isSignIn={isSignIn}
+      onClick={onClick}
+      onSignIn={handleSignIn}
+      onSignOut={handleSignOut}
+      onSignUp={handleSignUp}
+    />
+  );
 }
 
 interface typeIndexCT extends CommonState {}

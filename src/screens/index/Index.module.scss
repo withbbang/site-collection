@@ -7,4 +7,29 @@
   align-items: center;
   justify-content: center;
   @include background($more-light);
+
+  .signBtns {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    > span {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    > button {
+      margin-left: 15px;
+      padding: 10px;
+      cursor: pointer;
+      @include boxShadow('none');
+    }
+
+    > button:hover {
+      @include boxShadow(4px 4px 2px 1px rgba(0, 0, 0, 0.2));
+    }
+  }
 }
