@@ -20,3 +20,9 @@ export interface TypeLink {
   bookmark: string;
   createDt: any;
 }
+
+export interface TypeCategory {
+  id: string;
+  category: string;
+  description: string;
+}

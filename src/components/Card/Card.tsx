@@ -12,6 +12,7 @@ function Card({
   degreeOfUnderstanding,
   bookmark,
   createDt,
+  onDeleteDocument,
 }: TypeCard): React.JSX.Element {
   return (
     <div className={styles.wrap}>
@@ -41,7 +42,7 @@ function Card({
               <span>
                 <SVG type="modify" width="20px" height="20px" />
               </span>
-              <span>
+              <span onClick={() => onDeleteDocument(id)}>
                 <SVG type="trash" width="20px" height="20px" />
               </span>
             </div>
@@ -71,6 +72,7 @@ function Card({
 
 interface TypeCard extends TypeLink {
   isSignIn: boolean;
+  onDeleteDocument: (data: any) => void;
 }
 
 export default Card;

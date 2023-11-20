@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CommonState } from 'middlewares/reduxToolkits/commonSlice';
 import {
@@ -7,20 +7,26 @@ import {
   useGetDocumentsHook,
   useSignOutHook,
   useAuthStateChangedHook,
+  useDeleteDocumentHook,
 } from 'modules/customHooks';
+import { TypeCategory } from 'modules/types';
 import IndexPT from './IndexPT';
 
 function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const navigate = useNavigate();
 
   const isSignIn = useAuthStateChangedHook(uid);
-  const links = useGetDocumentsHook('Links');
-  const categories = useGetDocumentsHook('Categories');
+  const { documents: links, useGetDocuments } = useGetDocumentsHook('Links');
+  // const categories: Array<TypeCategory> = useGetDocumentsHook('Categories');
 
   const useAddDocument = useAddDocumentHook(
     'Links',
     { URL: 'http://bread-diagrams.o-r.kr/' },
     () => console.log('successCb'),
+  );
+  const useDeleteDocument = useDeleteDocumentHook('Links', useGetDocuments);
+  const handleDeletePopup = useSetConfirmPopup('Really Delete?', (id) =>
+    useDeleteDocument(id),
   );
   const handleConfirmPopup = useSetConfirmPopup(
     'Really Do?',
@@ -53,6 +59,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
       onSignIn={handleSignIn}
       onSignOut={handleSignOut}
       onSignUp={handleSignUp}
+      onDeleteDocument={handleDeletePopup}
     />
   );
 }

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -55,7 +56,21 @@ export function useGetDocumentsHook(type: string, cb?: () => any) {
     })();
   }, [type, cb]);
 
-  return documents;
+  const useGetDocuments = useCallback(async () => {
+    try {
+      dispatch(handleSetIsLoading({ isLoading: true }));
+      const querySnapshot = await getDocs(q);
+      setDocuments(
+        querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
+      );
+    } catch (error: any) {
+      handleSetCatchClause(dispatch, error, cb);
+    } finally {
+      dispatch(handleSetIsLoading({ isLoading: false }));
+    }
+  }, [type, cb]);
+
+  return { documents, useGetDocuments };
 }
 
 /**
@@ -95,14 +110,14 @@ export function useGetDocumentHook(type: string, id: string, cb?: () => any) {
  * @param {string} type firebase document attribute name
  * @param {any} params firebase document parameters
  * @param {function | undefined} successCb 성공 콜백
- * @param {function | undefined} faliCb 에러팝업 콜백
+ * @param {function | undefined} failCb 에러팝업 콜백
  * @returns
  */
 export function useAddDocumentHook(
   type: string,
   params: any,
   successCb?: (id?: string) => any,
-  faliCb?: () => any,
+  failCb?: () => any,
 ) {
   const dispatch = useDispatch();
 
@@ -112,11 +127,11 @@ export function useAddDocumentHook(
       const { id } = await addDoc(collection(db, type), params);
       successCb?.(id);
     } catch (error: any) {
-      handleSetCatchClause(dispatch, error, faliCb);
+      handleSetCatchClause(dispatch, error, failCb);
     } finally {
       dispatch(handleSetIsLoading({ isLoading: false }));
     }
-  }, [type, params, successCb, faliCb]);
+  }, [type, params, successCb, failCb]);
 
   return useAddDocument;
 }
@@ -127,7 +142,7 @@ export function useAddDocumentHook(
  * @param {string} id firebase document id
  * @param {any} params firebase document parameters
  * @param {function | undefined} successCb 성공 콜백
- * @param {function | undefined} faliCb 에러팝업 콜백
+ * @param {function | undefined} failCb 에러팝업 콜백
  * @returns
  */
 export function useUpdateDocumentHook(
@@ -135,7 +150,7 @@ export function useUpdateDocumentHook(
   id: string,
   params: any,
   successCb?: () => any,
-  faliCb?: () => any,
+  failCb?: () => any,
 ) {
   const dispatch = useDispatch();
 
@@ -145,13 +160,45 @@ export function useUpdateDocumentHook(
       await updateDoc(doc(db, type, id), params);
       successCb?.();
     } catch (error: any) {
-      handleSetCatchClause(dispatch, error, faliCb);
+      handleSetCatchClause(dispatch, error, failCb);
     } finally {
       dispatch(handleSetIsLoading({ isLoading: false }));
     }
-  }, [type, params, successCb, faliCb]);
+  }, [type, id, params, successCb, failCb]);
 
   return useUpdateDocument;
+}
+
+/**
+ * firebase document 삭제하기 커스텀 훅
+ * @param {string} type firebase document attribute name
+ * @param {function | undefined} successCb 성공 콜백
+ * @param {function | undefined} failCb 에러팝업 콜백
+ * @returns
+ */
+export function useDeleteDocumentHook(
+  type: string,
+  successCb?: () => any,
+  failCb?: () => any,
+) {
+  const dispatch = useDispatch();
+
+  const useDeleteDocument = useCallback(
+    async (id: string) => {
+      try {
+        dispatch(handleSetIsLoading({ isLoading: true }));
+        await deleteDoc(doc(db, type, id));
+        successCb?.();
+      } catch (error: any) {
+        handleSetCatchClause(dispatch, error, failCb);
+      } finally {
+        dispatch(handleSetIsLoading({ isLoading: false }));
+      }
+    },
+    [type, successCb, failCb],
+  );
+
+  return useDeleteDocument;
 }
 
 /**
@@ -162,41 +209,48 @@ export function useUpdateDocumentHook(
  */
 export function useSetConfirmPopup(
   message: string,
-  confirmCb: () => any,
-  cancelCb?: () => any,
+  confirmCb: (data: any) => any,
+  cancelCb?: (data: any) => any,
 ) {
   const dispatch = useDispatch();
 
-  const setConfirmPopup = useCallback(() => {
-    dispatch(handleSetMessage({ message }));
-    dispatch(handleSetIsConfirmPopupActive({ isConfirmPopupActive: true }));
-    dispatch(
-      handleSetConfirmBtn({
-        callback: () => {
-          dispatch(
-            handleSetIsConfirmPopupActive({ isConfirmPopupActive: false }),
-          );
-          dispatch(handleSetMessage({ message: '' }));
-          confirmCb();
-        },
-      }),
-    );
-    dispatch(
-      handleSetCancelBtn({
-        callback: () => {
-          dispatch(
-            handleSetIsConfirmPopupActive({ isConfirmPopupActive: false }),
-          );
-          dispatch(handleSetMessage({ message: '' }));
-          cancelCb?.();
-        },
-      }),
-    );
-  }, [message, confirmCb, cancelCb]);
+  const setConfirmPopup = useCallback(
+    (data?: any) => {
+      dispatch(handleSetMessage({ message }));
+      dispatch(handleSetIsConfirmPopupActive({ isConfirmPopupActive: true }));
+      dispatch(
+        handleSetConfirmBtn({
+          callback: () => {
+            dispatch(
+              handleSetIsConfirmPopupActive({ isConfirmPopupActive: false }),
+            );
+            dispatch(handleSetMessage({ message: '' }));
+            confirmCb(data);
+          },
+        }),
+      );
+      dispatch(
+        handleSetCancelBtn({
+          callback: () => {
+            dispatch(
+              handleSetIsConfirmPopupActive({ isConfirmPopupActive: false }),
+            );
+            dispatch(handleSetMessage({ message: '' }));
+            cancelCb?.(data);
+          },
+        }),
+      );
+    },
+    [message, confirmCb, cancelCb],
+  );
 
   return setConfirmPopup;
 }
 
+/**
+ * select tag 커스텀 훅
+ * @returns
+ */
 export function useSelectHook() {
   const [value, setValue] = useState<string>('');
 
@@ -209,7 +263,7 @@ export function useSelectHook() {
 }
 
 /**
- * key - value 폼 객체 setting 커스텀 훅
+ * input tag 커스텀 훅
  * @param {TypeKeyValueForm} keyValueForm key - value 객체
  * @returns
  */

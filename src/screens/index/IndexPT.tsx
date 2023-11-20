@@ -10,6 +10,7 @@ function IndexPT({
   onSignIn,
   onSignOut,
   onSignUp,
+  onDeleteDocument,
 }: typeIndexPT): React.JSX.Element {
   return (
     <div className={styles.wrap}>
@@ -38,6 +39,7 @@ function IndexPT({
             degreeOfUnderstanding={20}
             bookmark=""
             createDt=""
+            onDeleteDocument={onDeleteDocument}
           />
         )}
         {Array.isArray(links) &&
@@ -64,6 +66,7 @@ function IndexPT({
                 degreeOfUnderstanding={degreeOfUnderstanding}
                 bookmark={bookmark}
                 createDt={createDt}
+                onDeleteDocument={onDeleteDocument}
               />
             ),
           )}
@@ -79,6 +82,7 @@ interface typeIndexPT {
   onSignIn: () => void;
   onSignOut: () => void;
   onSignUp: () => void;
+  onDeleteDocument: (data: any) => void;
 }
 
 export default IndexPT;
