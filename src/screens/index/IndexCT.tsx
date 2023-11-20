@@ -8,6 +8,7 @@ import {
   useSignOutHook,
   useAuthStateChangedHook,
   useDeleteDocumentHook,
+  useSetIsActivePopup,
 } from 'modules/customHooks';
 import IndexPT from './IndexPT';
 
@@ -19,6 +20,10 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     useGetDocumentsHook('Links');
   const { documents: categories, useGetDocuments: useGetCategories } =
     useGetDocumentsHook('Categories');
+  const {
+    documents: degreeOfUnderstandings,
+    useGetDocuments: useGetDegreeOfUnderstandings,
+  } = useGetDocumentsHook('DegreeOfUnderstanding');
 
   const useAddDocument = useAddDocumentHook(
     'Links',
@@ -35,6 +40,8 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     () => console.log('click cancel'),
   );
   const useSignOut = useSignOutHook();
+  const { isActivePopup, xPos, yPos, useClickComponent } =
+    useSetIsActivePopup();
 
   const onClick = () => {
     handleConfirmPopup();
@@ -56,11 +63,15 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     <IndexPT
       isSignIn={isSignIn}
       links={links}
+      isActivePopup={isActivePopup}
+      xPos={xPos}
+      yPos={yPos}
       onClick={onClick}
       onSignIn={handleSignIn}
       onSignOut={handleSignOut}
       onSignUp={handleSignUp}
       onDeleteDocument={handleDeletePopup}
+      onClickCard={useClickComponent}
     />
   );
 }

@@ -13,9 +13,10 @@ function Card({
   bookmark,
   createDt,
   onDeleteDocument,
+  onClickCard,
 }: TypeCard): React.JSX.Element {
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wrap} onClick={(e) => onClickCard(e)}>
       {id === '0' ? (
         <span className={styles.add}>
           <SVG type="add" width="100px" height="100px" />
@@ -75,6 +76,10 @@ function Card({
 interface TypeCard extends TypeLink {
   isSignIn: boolean;
   onDeleteDocument: (data: any) => void;
+  onClickCard: (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    id?: string | undefined,
+  ) => void;
 }
 
 export default Card;

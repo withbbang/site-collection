@@ -426,3 +426,20 @@ export function useAuthStateChangedHook(
 
   return isSignIn;
 }
+
+export function useSetIsActivePopup() {
+  const [isActivePopup, setIsActivePopup] = useState<boolean>(false);
+  const [xPos, setXPos] = useState<number | undefined>();
+  const [yPos, setYPos] = useState<number | undefined>();
+
+  const useClickComponent = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id?: string) => {
+      setXPos(e.clientX);
+      setYPos(e.clientY);
+      setIsActivePopup(!isActivePopup);
+    },
+    [isActivePopup, xPos, yPos],
+  );
+
+  return { isActivePopup, xPos, yPos, useClickComponent };
+}
