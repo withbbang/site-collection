@@ -9,22 +9,23 @@ import {
   useAuthStateChangedHook,
   useDeleteDocumentHook,
 } from 'modules/customHooks';
-import { TypeCategory } from 'modules/types';
 import IndexPT from './IndexPT';
 
 function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const navigate = useNavigate();
 
   const isSignIn = useAuthStateChangedHook(uid);
-  const { documents: links, useGetDocuments } = useGetDocumentsHook('Links');
-  // const categories: Array<TypeCategory> = useGetDocumentsHook('Categories');
+  const { documents: links, useGetDocuments: useGetLinks } =
+    useGetDocumentsHook('Links');
+  const { documents: categories, useGetDocuments: useGetCategories } =
+    useGetDocumentsHook('Categories');
 
   const useAddDocument = useAddDocumentHook(
     'Links',
     { URL: 'http://bread-diagrams.o-r.kr/' },
     () => console.log('successCb'),
   );
-  const useDeleteDocument = useDeleteDocumentHook('Links', useGetDocuments);
+  const useDeleteDocument = useDeleteDocumentHook('Links', useGetLinks);
   const handleDeletePopup = useSetConfirmPopup('Really Delete?', (id) =>
     useDeleteDocument(id),
   );

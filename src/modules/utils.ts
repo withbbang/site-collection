@@ -129,3 +129,23 @@ export async function handleSignInWithEmailAndPassword(
     throw Error(error.message);
   }
 }
+
+/**
+ * 이해 등급 반환 함수
+ * @param {number} degree 이해 등급
+ * @returns {string}
+ */
+export function handleReturnDegree(degree: number): string {
+  switch (degree) {
+    case 0:
+      return 'Mastery';
+    case 5:
+      return 'Expert';
+    case 10:
+      return 'Advanced';
+    case 15:
+      return 'Intermediate';
+    default:
+      return 'Basic';
+  }
+}

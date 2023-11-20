@@ -1,7 +1,7 @@
 import React from 'react';
 import SVG from 'modules/SVG';
 import { TypeLink } from 'modules/types';
-import { handleConvertTimestamp } from 'modules/utils';
+import { handleConvertTimestamp, handleReturnDegree } from 'modules/utils';
 import styles from './Card.module.scss';
 
 function Card({
@@ -49,12 +49,14 @@ function Card({
           )}
           <h3>{title}</h3>
           <div className={styles.cardInfo}>
-            {isSignIn && (
-              <span className={styles.degree}>
-                <SVG type="degree" width="25px" height="25px" />
-                &nbsp;&nbsp;{degreeOfUnderstanding}
-              </span>
-            )}
+            <span className={styles.degree}>
+              {isSignIn && (
+                <>
+                  <SVG type="degree" width="25px" height="25px" />
+                  &nbsp;&nbsp;{handleReturnDegree(degreeOfUnderstanding)}
+                </>
+              )}
+            </span>
             <span>
               {createDt && (
                 <>
