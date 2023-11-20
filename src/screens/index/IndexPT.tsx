@@ -1,8 +1,11 @@
 import React from 'react';
+import Card from 'components/Card/Card';
+import { TypeLink } from 'modules/types';
 import styles from './Index.module.scss';
 
 function IndexPT({
   isSignIn,
+  links,
   onClick,
   onSignIn,
   onSignOut,
@@ -23,15 +26,55 @@ function IndexPT({
           </>
         )}
       </div>
-      <h1>Index Page</h1>
-      <button onClick={onClick}>onClick</button>
-      <button onClick={onSignOut}>signOut</button>
+      <h1>Site Link Collection</h1>
+      <div className={styles.innerWrap}>
+        {isSignIn && (
+          <Card
+            isSignIn={isSignIn}
+            id="0"
+            title=""
+            url=""
+            category=""
+            degreeOfUnderstanding={20}
+            bookmark=""
+            createDt=""
+          />
+        )}
+        {Array.isArray(links) &&
+          links.length > 0 &&
+          links.map(
+            ({
+              id,
+              title,
+              url,
+              description,
+              category,
+              degreeOfUnderstanding,
+              bookmark,
+              createDt,
+            }: TypeLink) => (
+              <Card
+                isSignIn={isSignIn}
+                key={id}
+                id={id}
+                title={title}
+                url={url}
+                description={description}
+                category={category}
+                degreeOfUnderstanding={degreeOfUnderstanding}
+                bookmark={bookmark}
+                createDt={createDt}
+              />
+            ),
+          )}
+      </div>
     </div>
   );
 }
 
 interface typeIndexPT {
   isSignIn: boolean;
+  links: Array<TypeLink>;
   onClick: () => void;
   onSignIn: () => void;
   onSignOut: () => void;

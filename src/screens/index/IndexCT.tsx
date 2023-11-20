@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CommonState } from 'middlewares/reduxToolkits/commonSlice';
 import {
@@ -12,8 +12,11 @@ import IndexPT from './IndexPT';
 
 function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const navigate = useNavigate();
+
   const isSignIn = useAuthStateChangedHook(uid);
-  const docs = useGetDocumentsHook('Links');
+  const links = useGetDocumentsHook('Links');
+  const categories = useGetDocumentsHook('Categories');
+
   const useAddDocument = useAddDocumentHook(
     'Links',
     { URL: 'http://bread-diagrams.o-r.kr/' },
@@ -45,6 +48,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   return (
     <IndexPT
       isSignIn={isSignIn}
+      links={links}
       onClick={onClick}
       onSignIn={handleSignIn}
       onSignOut={handleSignOut}

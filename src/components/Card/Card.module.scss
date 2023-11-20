@@ -1,0 +1,111 @@
+.wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 45%;
+  padding: 3% 30px;
+  margin: 20px 0;
+  border-radius: 30px;
+  box-sizing: border-box;
+  max-height: 200px;
+  min-height: 200px;
+  @include background-boxShadow-transform($most-light, 'none', scale(1));
+
+  .add {
+    position: absolute;
+    top: calc(50% - 50px);
+    left: calc(50% - 50px);
+  }
+
+  .floatCategory {
+    position: absolute;
+    display: flex;
+    top: 15px;
+    left: 30px;
+
+    > span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .floatBtns {
+    position: absolute;
+    display: none;
+    top: 15px;
+    right: 30px;
+
+    > span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  }
+
+  h3 {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    font-size: 1.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: keep-all; /* 줄 넘기기 */
+
+    /* 최대 줄 3개로 보여주기 */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    @include font($most-dark);
+  }
+
+  .cardInfo {
+    width: calc(100% - 60px);
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 15px;
+
+    > span {
+      display: flex;
+      align-items: center;
+    }
+
+    .degree {
+      opacity: 0;
+    }
+  }
+}
+
+.wrap:hover {
+  cursor: pointer;
+  @include boxShadow-transform(4px 4px 2px 1px rgba(0, 0, 0, 0.2), scale(1.03));
+
+  .floatBtns {
+    display: flex;
+  }
+
+  .cardInfo {
+    .degree {
+      opacity: 1;
+    }
+  }
+}
+
+@include mobile {
+  .wrap {
+    width: 100%;
+
+    .floatBtns {
+      display: flex;
+    }
+
+    .cardInfo {
+      .degree {
+        opacity: 1;
+      }
+    }
+  }
+}

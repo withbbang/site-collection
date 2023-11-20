@@ -32,4 +32,27 @@
       @include boxShadow(4px 4px 2px 1px rgba(0, 0, 0, 0.2));
     }
   }
+
+  .innerWrap {
+    position: relative;
+    padding: 5% 10%;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@include mobile {
+  .wrap {
+    padding-top: 100px;
+
+    .innerWrap {
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
+  }
 }

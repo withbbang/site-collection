@@ -44,7 +44,9 @@ export function useGetDocumentsHook(type: string, cb?: () => any) {
       try {
         dispatch(handleSetIsLoading({ isLoading: true }));
         const querySnapshot = await getDocs(q);
-        setDocuments(querySnapshot.docs.map((doc) => ({ ...doc.data() })));
+        setDocuments(
+          querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
+        );
       } catch (error: any) {
         handleSetCatchClause(dispatch, error, cb);
       } finally {
@@ -193,6 +195,17 @@ export function useSetConfirmPopup(
   }, [message, confirmCb, cancelCb]);
 
   return setConfirmPopup;
+}
+
+export function useSelectHook() {
+  const [value, setValue] = useState<string>('');
+
+  const useSelectChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => setValue(e.target.value),
+    [value],
+  );
+
+  return { value, useSelectChange };
 }
 
 /**
