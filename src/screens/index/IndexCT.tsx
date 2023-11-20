@@ -11,9 +11,8 @@ import {
 import IndexPT from './IndexPT';
 
 function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
-  //FIXME: 로그아웃해도 login 상태값으로 남아있는 현상 수정 필요
-  const isSignIn = useAuthStateChangedHook(uid);
   const navigate = useNavigate();
+  const isSignIn = useAuthStateChangedHook(uid);
   const docs = useGetDocumentsHook('Links');
   const useAddDocument = useAddDocumentHook(
     'Links',

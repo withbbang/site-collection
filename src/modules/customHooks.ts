@@ -343,20 +343,18 @@ export function useAuthStateChangedHook(
   const dispatch = useDispatch();
 
   useEffect(() => {
-    try {
+    onAuthStateChanged(auth, (user) => {
       dispatch(handleSetIsLoading({ isLoading: true }));
-      onAuthStateChanged(auth, (user) => {
-        if (user) setIsSignIn(true);
-        else if (isActiveErrorPopup) {
+      if (user) setIsSignIn(true);
+      else {
+        setIsSignIn(false);
+        if (isActiveErrorPopup) {
           handleSetCatchClause(dispatch, Error('Sign In Required'));
           throw Error('Sign In Required');
         }
-      });
-    } catch (error: any) {
-      handleSetCatchClause(dispatch, error);
-    } finally {
+      }
       dispatch(handleSetIsLoading({ isLoading: false }));
-    }
+    });
   }, [uid]);
 
   return isSignIn;

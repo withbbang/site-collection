@@ -32,8 +32,8 @@ function ConfirmPopup({
       <div className={styles.modalBody}>
         <span>{message}</span>
         <div>
-          <button onClick={handleCancelBtn}>취소</button>
-          <button onClick={handleConfirmBtn}>확인</button>
+          <button onClick={handleCancelBtn}>Cancel</button>
+          <button onClick={handleConfirmBtn}>Confirm</button>
         </div>
       </div>
     </div>
