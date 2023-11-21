@@ -434,7 +434,10 @@ export function useSetIsActivePopup() {
   const [yPos, setYPos] = useState<number | undefined>();
 
   const useClickComponent = useCallback(
-    (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id?: string) => {
+    (
+      e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+      id: string | undefined,
+    ) => {
       setXPos(e.clientX);
       setYPos(e.clientY);
       setSelectedId(id);

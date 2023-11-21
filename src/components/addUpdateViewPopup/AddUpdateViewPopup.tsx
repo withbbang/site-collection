@@ -19,7 +19,7 @@ function AddUpdateViewPopup({
     } else {
       handleInActivePopup();
     }
-  }, [isActive]);
+  }, [isActive, link]);
 
   // 팝업 활성
   const handleActivePopup = () => {
