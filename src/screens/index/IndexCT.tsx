@@ -40,7 +40,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     () => console.log('click cancel'),
   );
   const useSignOut = useSignOutHook();
-  const { isActivePopup, xPos, yPos, useClickComponent } =
+  const { isActivePopup, selectedId, xPos, yPos, useClickComponent } =
     useSetIsActivePopup();
 
   const onClick = () => {
@@ -64,6 +64,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
       isSignIn={isSignIn}
       links={links}
       isActivePopup={isActivePopup}
+      selectedId={selectedId}
       xPos={xPos}
       yPos={yPos}
       onClick={onClick}

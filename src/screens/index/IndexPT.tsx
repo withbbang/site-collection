@@ -8,6 +8,7 @@ function IndexPT({
   isSignIn,
   links,
   isActivePopup,
+  selectedId,
   xPos,
   yPos,
   onClick,
@@ -23,6 +24,7 @@ function IndexPT({
         isActive={isActivePopup}
         xPos={xPos}
         yPos={yPos}
+        link={links.filter((link) => link.id === selectedId)[0]}
         onClick={onClickCard}
       />
       <div className={styles.wrap}>
@@ -94,6 +96,7 @@ interface typeIndexPT {
   isSignIn: boolean;
   links: Array<TypeLink>;
   isActivePopup: boolean;
+  selectedId: string | undefined;
   xPos: number | undefined;
   yPos: number | undefined;
   onClick: () => void;

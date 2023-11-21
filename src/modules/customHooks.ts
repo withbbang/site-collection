@@ -429,6 +429,7 @@ export function useAuthStateChangedHook(
 
 export function useSetIsActivePopup() {
   const [isActivePopup, setIsActivePopup] = useState<boolean>(false);
+  const [selectedId, setSelectedId] = useState<string | undefined>();
   const [xPos, setXPos] = useState<number | undefined>();
   const [yPos, setYPos] = useState<number | undefined>();
 
@@ -436,10 +437,11 @@ export function useSetIsActivePopup() {
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id?: string) => {
       setXPos(e.clientX);
       setYPos(e.clientY);
+      setSelectedId(id);
       setIsActivePopup(!isActivePopup);
     },
-    [isActivePopup, xPos, yPos],
+    [isActivePopup, selectedId, xPos, yPos],
   );
 
-  return { isActivePopup, xPos, yPos, useClickComponent };
+  return { isActivePopup, selectedId, xPos, yPos, useClickComponent };
 }

@@ -16,7 +16,7 @@ function Card({
   onClickCard,
 }: TypeCard): React.JSX.Element {
   return (
-    <div className={styles.wrap} onClick={(e) => onClickCard(e)}>
+    <div className={styles.wrap} onClick={(e) => onClickCard(e, id)}>
       {id === '0' ? (
         <span className={styles.add}>
           <SVG type="add" width="100px" height="100px" />

@@ -1,10 +1,12 @@
 import React from 'react';
+import { TypeLink } from 'modules/types';
 import styles from './AddUpdateViewPopup.module.scss';
 
 function AddUpdateViewPopup({
+  isActive,
   xPos,
   yPos,
-  isActive,
+  link,
   onClick,
 }: TypeAddUpdateViewPopup): React.JSX.Element {
   const ref = React.useRef(
@@ -66,9 +68,10 @@ function AddUpdateViewPopup({
 }
 
 interface TypeAddUpdateViewPopup {
+  isActive: boolean;
   xPos: number | undefined;
   yPos: number | undefined;
-  isActive: boolean;
+  link: TypeLink | undefined;
   onClick: (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     id?: string | undefined,
