@@ -62,7 +62,19 @@ function AddUpdateViewPopup({
         }
         onClick={onClick}
       />
-      <div className={styles.modalBody} ref={ref}></div>
+      <div className={styles.modalBody} ref={ref}>
+        <div>
+          <input />
+          <select>Bookmark</select>
+        </div>
+        <div>
+          <select>Type</select>
+          <select>Degree</select>
+        </div>
+        <div>
+          <textarea style={{ resize: 'none' }} />
+        </div>
+      </div>
     </>
   );
 }
