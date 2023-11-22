@@ -7,14 +7,14 @@ export interface TypeSVG {
 }
 
 export interface TypeKeyValueForm {
-  [key: string]: string;
+  [key: string]: string | number;
 }
 
 export interface TypeLink {
   id: string;
   title: string;
-  url?: string;
-  description?: string;
+  url: string;
+  description: string;
   category: string;
   degreeOfUnderstanding: number;
   bookmark: string;

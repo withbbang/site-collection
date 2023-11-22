@@ -248,31 +248,21 @@ export function useSetConfirmPopup(
 }
 
 /**
- * select tag 커스텀 훅
- * @returns
- */
-export function useSelectHook() {
-  const [value, setValue] = useState<string>('');
-
-  const useSelectChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => setValue(e.target.value),
-    [value],
-  );
-
-  return { value, useSelectChange };
-}
-
-/**
- * input tag 커스텀 훅
+ * input, textarea, select tag 커스텀 훅
  * @param {TypeKeyValueForm} keyValueForm key - value 객체
  * @returns
  */
-export function useInputHook(keyValueForm: TypeKeyValueForm) {
+export function useChangeHook(keyValueForm: TypeKeyValueForm) {
   const [form, setForm] = useState<TypeKeyValueForm>(keyValueForm);
 
   // email, password onChange 콜백 함수
-  const useInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+  const useChange = useCallback(
+    (
+      e:
+        | React.ChangeEvent<HTMLInputElement>
+        | React.ChangeEvent<HTMLTextAreaElement>
+        | React.ChangeEvent<HTMLSelectElement>,
+    ) => {
       const { name, value } = e.target;
 
       setForm((prevState) => ({ ...prevState, [name]: value.trim() }));
@@ -280,7 +270,7 @@ export function useInputHook(keyValueForm: TypeKeyValueForm) {
     [keyValueForm],
   );
 
-  return { form, useInputChange };
+  return { form, setForm, useChange };
 }
 
 /**
@@ -322,8 +312,8 @@ export function useSignUpHook(signUpForm: TypeKeyValueForm) {
       const {
         user: { uid },
       } = await handleCreateUserWithEmailAndPassword(
-        signUpForm.email,
-        handleEncryptValue(signUpForm.password),
+        signUpForm.email as string,
+        handleEncryptValue(signUpForm.password as string),
       );
 
       navigate('/sign/in', { replace: true });
@@ -356,8 +346,8 @@ export function useSignInHook(signInForm: TypeKeyValueForm) {
       const {
         user: { uid },
       } = await handleSignInWithEmailAndPassword(
-        signInForm.email,
-        handleEncryptValue(signInForm.password),
+        signInForm.email as string,
+        handleEncryptValue(signInForm.password as string),
       );
 
       dispatch(handleSetUserInfo({ uid, email: signInForm.email }));

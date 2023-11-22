@@ -49,6 +49,7 @@ function IndexPT({
               id="0"
               title=""
               url=""
+              description=""
               category=""
               degreeOfUnderstanding={20}
               bookmark=""

@@ -6,7 +6,7 @@ import { CommonState } from 'middlewares/reduxToolkits/commonSlice';
 import { PropState } from 'middlewares/configureReducer';
 import {
   useEnterKeyDownHook,
-  useInputHook,
+  useChangeHook,
   useSignUpHook,
 } from 'modules/customHooks';
 import Back from 'components/back/Back';
@@ -23,7 +23,7 @@ function mapDispatchToProps(dispatch: (actionFunction: Action<any>) => any) {
 
 function SignUp({ uid }: TypeSignUp): React.JSX.Element {
   const navigate = useNavigate();
-  const { form, useInputChange } = useInputHook({ email: '', password: '' });
+  const { form, useChange } = useChangeHook({ email: '', password: '' });
   const useSignUp = useSignUpHook(form);
   const useEnterKeyDown = useEnterKeyDownHook(form, useSignUp);
 
@@ -40,14 +40,14 @@ function SignUp({ uid }: TypeSignUp): React.JSX.Element {
         <h2>Sign Up</h2>
         <AuthInput
           label={'email'}
-          value={form.email}
-          onChange={useInputChange}
+          value={form.email as string}
+          onChange={useChange}
           onKeyDown={useEnterKeyDown}
         />
         <AuthInput
           label={'password'}
-          value={form.password}
-          onChange={useInputChange}
+          value={form.password as string}
+          onChange={useChange}
           onKeyDown={useEnterKeyDown}
         />
         <button onClick={useSignUp}>Sign Up</button>

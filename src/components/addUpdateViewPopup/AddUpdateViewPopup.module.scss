@@ -24,12 +24,59 @@
   justify-content: space-evenly;
   align-items: center;
   width: 30%;
-  height: 40%;
+  height: 130px;
   padding: 20px;
   text-align: center;
   border-radius: 10px;
   background-color: $more-light;
   z-index: 110;
+
+  > div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    > label {
+      width: 100%;
+      text-align: start;
+      font-size: 0.9rem;
+
+      > input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 5px;
+        font-size: 0.8rem;
+        resize: none;
+        box-sizing: border-box;
+      }
+    }
+  }
+
+  .contents {
+    justify-content: space-between;
+
+    > label {
+      width: 45%;
+    }
+
+    > button {
+      width: 45%;
+      height: 100%;
+      box-sizing: border-box;
+      color: $most-dark;
+      font-weight: bold;
+      background: $most-light;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      @include boxShadow('none');
+    }
+
+    > button:hover {
+      @include boxShadow(4px 4px 2px 1px rgba(0, 0, 0, 0.2));
+    }
+  }
 }
 
 @include tablit {

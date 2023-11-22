@@ -18,12 +18,6 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const isSignIn = useAuthStateChangedHook(uid);
   const { documents: links, useGetDocuments: useGetLinks } =
     useGetDocumentsHook('Links');
-  const { documents: categories, useGetDocuments: useGetCategories } =
-    useGetDocumentsHook('Categories');
-  const {
-    documents: degreeOfUnderstandings,
-    useGetDocuments: useGetDegreeOfUnderstandings,
-  } = useGetDocumentsHook('DegreeOfUnderstanding');
 
   const useAddDocument = useAddDocumentHook(
     'Links',
