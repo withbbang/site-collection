@@ -17,7 +17,7 @@ function Card({
   return (
     <div
       className={styles.wrap}
-      onClick={(e) => onClickCard(e, id === '0' ? 'Add' : 'view')}
+      onClick={(e) => onClickCard(e, id === '0' ? 'Add' : 'view', id)}
     >
       {id === '0' ? (
         <span className={styles.add}>
@@ -45,7 +45,7 @@ function Card({
               <span onClick={(e) => onClickCard(e, 'Update', id)}>
                 <SVG type="modify" width="20px" height="20px" />
               </span>
-              <span onClick={() => onDeleteDocument?.(id)}>
+              <span onClick={(e) => onDeleteDocument?.(e, id)}>
                 <SVG type="trash" width="20px" height="20px" />
               </span>
             </div>
@@ -87,7 +87,10 @@ interface TypeCard {
   degreeOfUnderstanding?: number;
   bookmark?: string;
   createDt?: any;
-  onDeleteDocument?: (data: any) => void;
+  onDeleteDocument?: (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    id: string,
+  ) => void;
   onClickCard: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     type?: string,

@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from 'components/card/Card';
-import { TypeLink } from 'modules/types';
+import { TypeKeyValueForm, TypeLink } from 'modules/types';
 import AddUpdateViewPopup from 'components/addUpdateViewPopup/AddUpdateViewPopup';
 import styles from './Index.module.scss';
 
@@ -12,10 +12,11 @@ function IndexPT({
   selectedId,
   xPos,
   yPos,
-  onClick,
   onSignIn,
   onSignOut,
   onSignUp,
+  onAddDocument,
+  onUpdateDocument,
   onDeleteDocument,
   onClickCard,
 }: typeIndexPT): React.JSX.Element {
@@ -27,7 +28,9 @@ function IndexPT({
         yPos={yPos}
         popupType={popupType}
         link={links.filter((link) => link.id === selectedId)[0]}
-        onClick={onClickCard}
+        onClickCard={onClickCard}
+        onAddDocument={onAddDocument}
+        onUpdateDocument={onUpdateDocument}
       />
       <div className={styles.wrap}>
         <div className={styles.signBtns}>
@@ -87,15 +90,27 @@ interface typeIndexPT {
   selectedId: string | undefined;
   xPos: number | undefined;
   yPos: number | undefined;
-  onClick: () => void;
   onSignIn: () => void;
   onSignOut: () => void;
   onSignUp: () => void;
-  onDeleteDocument: (data: any) => void;
+  // onDeleteDocument: (data: any) => void;
   onClickCard: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     type?: string,
     id?: string,
+  ) => void;
+  onAddDocument: (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    form: TypeKeyValueForm,
+  ) => void;
+  onUpdateDocument: (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    id: string,
+    form: TypeKeyValueForm,
+  ) => void;
+  onDeleteDocument: (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    id: string,
   ) => void;
 }
 

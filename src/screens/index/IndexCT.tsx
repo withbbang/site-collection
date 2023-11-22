@@ -9,7 +9,9 @@ import {
   useAuthStateChangedHook,
   useDeleteDocumentHook,
   useSetIsActivePopup,
+  useUpdateDocumentHook,
 } from 'modules/customHooks';
+import { TypeKeyValueForm } from 'modules/types';
 import IndexPT from './IndexPT';
 
 function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
@@ -20,27 +22,15 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const { documents: links, useGetDocuments: useGetLinks } =
     useGetDocumentsHook('Links');
 
-  const useAddDocument = useAddDocumentHook(
-    'Links',
-    { URL: 'http://bread-diagrams.o-r.kr/' },
-    () => console.log('successCb'),
-  );
-  const useDeleteDocument = useDeleteDocumentHook('Links', useGetLinks);
-  const handleDeletePopup = useSetConfirmPopup('Really Delete?', (id) =>
-    useDeleteDocument(id),
-  );
-  const handleConfirmPopup = useSetConfirmPopup(
-    'Really Do?',
-    useAddDocument,
-    () => console.log('click cancel'),
+  const useAddDocument = useAddDocumentHook(() => console.log('failCb'));
+  const useUpdateDocument = useUpdateDocumentHook(() => console.log('failCb'));
+  const useDeleteDocument = useDeleteDocumentHook(() => console.log('failCb'));
+  const handleConfirmPopup = useSetConfirmPopup(() =>
+    console.log('click cancel'),
   );
   const useSignOut = useSignOutHook();
   const { isActivePopup, selectedId, xPos, yPos, useClickComponent } =
     useSetIsActivePopup();
-
-  const onClick = () => {
-    handleConfirmPopup();
-  };
 
   const handleClickCard = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
@@ -50,6 +40,42 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     e.stopPropagation();
     setPopupType(type);
     useClickComponent(e, id);
+  };
+
+  const handleAddDocument = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    form: TypeKeyValueForm,
+  ) => {
+    handleConfirmPopup('Really Add Document?', () => {
+      useAddDocument('Links', { ...form, createDt: new Date() }, () =>
+        useGetLinks('Links'),
+      );
+    });
+    useClickComponent(e);
+  };
+
+  const handleUpdateDocument = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    id: string,
+    form: TypeKeyValueForm,
+  ) => {
+    e.stopPropagation();
+    handleConfirmPopup('Really Update Document?', () => {
+      useUpdateDocument('Links', id, { ...form, updateDt: new Date() }, () => {
+        useGetLinks('Links');
+        useClickComponent(e);
+      });
+    });
+  };
+
+  const handleDeleteDocument = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    id: string,
+  ) => {
+    e.stopPropagation();
+    handleConfirmPopup('Really Delete Document?', () => {
+      useDeleteDocument('Links', id, () => useGetLinks('Links'));
+    });
   };
 
   const handleSignOut = () => {
@@ -73,11 +99,12 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
       selectedId={selectedId}
       xPos={xPos}
       yPos={yPos}
-      onClick={onClick}
       onSignIn={handleSignIn}
       onSignOut={handleSignOut}
       onSignUp={handleSignUp}
-      onDeleteDocument={handleDeletePopup}
+      onAddDocument={handleAddDocument}
+      onUpdateDocument={handleUpdateDocument}
+      onDeleteDocument={handleDeleteDocument}
       onClickCard={handleClickCard}
     />
   );

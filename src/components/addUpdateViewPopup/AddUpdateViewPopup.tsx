@@ -1,5 +1,5 @@
 import React from 'react';
-import { TypeLink } from 'modules/types';
+import { TypeKeyValueForm, TypeLink } from 'modules/types';
 import { useGetDocumentsHook, useChangeHook } from 'modules/customHooks';
 import styles from './AddUpdateViewPopup.module.scss';
 
@@ -9,7 +9,9 @@ function AddUpdateViewPopup({
   xPos,
   yPos,
   link,
-  onClick,
+  onClickCard,
+  onAddDocument,
+  onUpdateDocument,
 }: TypeAddUpdateViewPopup): React.JSX.Element {
   const ref = React.useRef(
     null,
@@ -103,7 +105,7 @@ function AddUpdateViewPopup({
             ? [styles.background, styles.isActive].join(' ')
             : styles.background
         }
-        onClick={onClick}
+        onClick={(e) => onClickCard(e)}
       />
       <div
         className={
@@ -142,11 +144,13 @@ function AddUpdateViewPopup({
               value={form.category}
               onChange={useChange}
             >
-              <option value="">All</option>
+              <option value="All">All</option>
               {Array.isArray(categories) &&
                 categories.length > 0 &&
                 categories.map(({ category, description }) => (
-                  <option value={category}>{description}</option>
+                  <option key={category} value={category}>
+                    {description}
+                  </option>
                 ))}
             </select>
           </label>
@@ -189,11 +193,22 @@ function AddUpdateViewPopup({
               {Array.isArray(degreeOfUnderstandings) &&
                 degreeOfUnderstandings.length > 0 &&
                 degreeOfUnderstandings.map(({ grade, description }) => (
-                  <option value={grade}>{description}</option>
+                  <option key={description} value={grade}>
+                    {description}
+                  </option>
                 ))}
             </select>
           </label>
-          <button>{popupType === 'view' ? 'OK' : popupType}</button>
+          <button
+            onClick={(e) => {
+              if (popupType === 'Add') onAddDocument(e, form);
+              else if (popupType === 'Update' && link)
+                onUpdateDocument(e, link.id, form);
+              else onClickCard(e);
+            }}
+          >
+            {popupType === 'view' ? 'OK' : popupType}
+          </button>
         </div>
       </div>
     </>
@@ -206,10 +221,19 @@ interface TypeAddUpdateViewPopup {
   xPos?: number;
   yPos?: number;
   link?: TypeLink;
-  onClick: (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  onClickCard: (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
     type?: string,
     id?: string | undefined,
+  ) => void;
+  onAddDocument: (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    form: TypeKeyValueForm,
+  ) => void;
+  onUpdateDocument: (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    id: string,
+    form: TypeKeyValueForm,
   ) => void;
 }
 
