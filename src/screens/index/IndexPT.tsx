@@ -6,6 +6,7 @@ import styles from './Index.module.scss';
 
 function IndexPT({
   isSignIn,
+  popupType,
   links,
   isActivePopup,
   selectedId,
@@ -24,6 +25,7 @@ function IndexPT({
         isActive={isActivePopup}
         xPos={xPos}
         yPos={yPos}
+        popupType={popupType}
         link={links.filter((link) => link.id === selectedId)[0]}
         onClick={onClickCard}
       />
@@ -44,19 +46,7 @@ function IndexPT({
         <h1>Site Link Collection</h1>
         <div className={styles.innerWrap}>
           {isSignIn && (
-            <Card
-              isSignIn={isSignIn}
-              id="0"
-              title=""
-              url=""
-              description=""
-              category=""
-              degreeOfUnderstanding={20}
-              bookmark=""
-              createDt=""
-              onDeleteDocument={onDeleteDocument}
-              onClickCard={onClickCard}
-            />
+            <Card isSignIn={isSignIn} id="0" onClickCard={onClickCard} />
           )}
           {Array.isArray(links) &&
             links.length > 0 &&
@@ -64,8 +54,6 @@ function IndexPT({
               ({
                 id,
                 title,
-                url,
-                description,
                 category,
                 degreeOfUnderstanding,
                 bookmark,
@@ -76,8 +64,6 @@ function IndexPT({
                   key={id}
                   id={id}
                   title={title}
-                  url={url}
-                  description={description}
                   category={category}
                   degreeOfUnderstanding={degreeOfUnderstanding}
                   bookmark={bookmark}
@@ -95,6 +81,7 @@ function IndexPT({
 
 interface typeIndexPT {
   isSignIn: boolean;
+  popupType?: string;
   links: Array<TypeLink>;
   isActivePopup: boolean;
   selectedId: string | undefined;
@@ -106,9 +93,14 @@ interface typeIndexPT {
   onSignUp: () => void;
   onDeleteDocument: (data: any) => void;
   onClickCard: (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    id?: string | undefined,
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    type?: string,
+    id?: string,
   ) => void;
 }
+
+IndexPT.defaultProps = {
+  popupType: '',
+};
 
 export default IndexPT;

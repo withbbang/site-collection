@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CommonState } from 'middlewares/reduxToolkits/commonSlice';
 import {
@@ -14,6 +14,7 @@ import IndexPT from './IndexPT';
 
 function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const navigate = useNavigate();
+  const [popupType, setPopupType] = useState<string | undefined>();
 
   const isSignIn = useAuthStateChangedHook(uid);
   const { documents: links, useGetDocuments: useGetLinks } =
@@ -41,6 +42,16 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     handleConfirmPopup();
   };
 
+  const handleClickCard = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    type?: string,
+    id?: string,
+  ) => {
+    e.stopPropagation();
+    setPopupType(type);
+    useClickComponent(e, id);
+  };
+
   const handleSignOut = () => {
     useSignOut();
   };
@@ -56,6 +67,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   return (
     <IndexPT
       isSignIn={isSignIn}
+      popupType={popupType}
       links={links}
       isActivePopup={isActivePopup}
       selectedId={selectedId}
@@ -66,7 +78,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
       onSignOut={handleSignOut}
       onSignUp={handleSignUp}
       onDeleteDocument={handleDeletePopup}
-      onClickCard={useClickComponent}
+      onClickCard={handleClickCard}
     />
   );
 }

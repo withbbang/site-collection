@@ -5,6 +5,7 @@ import styles from './AddUpdateViewPopup.module.scss';
 
 function AddUpdateViewPopup({
   isActive,
+  popupType,
   xPos,
   yPos,
   link,
@@ -106,7 +107,7 @@ function AddUpdateViewPopup({
       />
       <div
         className={
-          link
+          popupType === 'view'
             ? [styles.modalBody, styles.viewMode].join(' ')
             : styles.modalBody
         }
@@ -192,7 +193,7 @@ function AddUpdateViewPopup({
                 ))}
             </select>
           </label>
-          <button>Add</button>
+          <button>{popupType === 'view' ? 'OK' : popupType}</button>
         </div>
       </div>
     </>
@@ -201,13 +202,22 @@ function AddUpdateViewPopup({
 
 interface TypeAddUpdateViewPopup {
   isActive: boolean;
-  xPos: number | undefined;
-  yPos: number | undefined;
-  link: TypeLink | undefined;
+  popupType?: string;
+  xPos?: number;
+  yPos?: number;
+  link?: TypeLink;
   onClick: (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    type?: string,
     id?: string | undefined,
   ) => void;
 }
+
+AddUpdateViewPopup.defaultProps = {
+  popupType: '',
+  xPos: undefined,
+  yPos: undefined,
+  link: undefined,
+};
 
 export default AddUpdateViewPopup;

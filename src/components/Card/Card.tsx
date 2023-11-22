@@ -1,7 +1,6 @@
 import React from 'react';
-import SVG from 'modules/SVG';
-import { TypeLink } from 'modules/types';
 import { handleConvertTimestamp, handleReturnDegree } from 'modules/utils';
+import SVG from 'modules/SVG';
 import styles from './Card.module.scss';
 
 function Card({
@@ -16,7 +15,10 @@ function Card({
   onClickCard,
 }: TypeCard): React.JSX.Element {
   return (
-    <div className={styles.wrap} onClick={(e) => onClickCard(e, id)}>
+    <div
+      className={styles.wrap}
+      onClick={(e) => onClickCard(e, id === '0' ? 'Add' : 'view')}
+    >
       {id === '0' ? (
         <span className={styles.add}>
           <SVG type="add" width="100px" height="100px" />
@@ -40,10 +42,10 @@ function Card({
                   fill={bookmark === 'Y' ? '#F4CF30' : '#000'}
                 />
               </span>
-              <span>
+              <span onClick={(e) => onClickCard(e, 'Update', id)}>
                 <SVG type="modify" width="20px" height="20px" />
               </span>
-              <span onClick={() => onDeleteDocument(id)}>
+              <span onClick={() => onDeleteDocument?.(id)}>
                 <SVG type="trash" width="20px" height="20px" />
               </span>
             </div>
@@ -54,7 +56,9 @@ function Card({
               {isSignIn && (
                 <>
                   <SVG type="degree" width="25px" height="25px" />
-                  &nbsp;&nbsp;{handleReturnDegree(degreeOfUnderstanding)}
+                  &nbsp;&nbsp;
+                  {degreeOfUnderstanding &&
+                    handleReturnDegree(degreeOfUnderstanding)}
                 </>
               )}
             </span>
@@ -62,7 +66,9 @@ function Card({
               {createDt && (
                 <>
                   <SVG type="time" width="20px" height="20px" />
-                  &nbsp;{handleConvertTimestamp(createDt.toDate(), 'date')}
+                  &nbsp;
+                  {createDt &&
+                    handleConvertTimestamp(createDt.toDate(), 'date')}
                 </>
               )}
             </span>
@@ -73,13 +79,29 @@ function Card({
   );
 }
 
-interface TypeCard extends TypeLink {
+interface TypeCard {
   isSignIn: boolean;
-  onDeleteDocument: (data: any) => void;
+  id: string;
+  title?: string;
+  category?: string;
+  degreeOfUnderstanding?: number;
+  bookmark?: string;
+  createDt?: any;
+  onDeleteDocument?: (data: any) => void;
   onClickCard: (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    type?: string,
     id?: string | undefined,
   ) => void;
 }
+
+Card.defaultProps = {
+  title: '',
+  category: '',
+  degreeOfUnderstanding: 20,
+  bookmark: '',
+  createDt: undefined,
+  onDeleteDocument: undefined,
+};
 
 export default Card;
