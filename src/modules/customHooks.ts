@@ -32,10 +32,10 @@ import { TypeKeyValueForm } from './types';
 /**
  * firebase documents 가져오기 커스텀 훅
  * @param {string} type firebase document attribute name
- * @param {function} cb 에러팝업 콜백
+ * @param {function} failCb 에러팝업 콜백
  * @returns
  */
-export function useGetDocumentsHook(type: string, cb?: () => any) {
+export function useGetDocumentsHook(type: string, failCb?: () => any) {
   const dispatch = useDispatch();
   const [documents, setDocuments] = useState<any[]>([]);
   const q = query(collection(db, type));
@@ -49,12 +49,12 @@ export function useGetDocumentsHook(type: string, cb?: () => any) {
           querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
         );
       } catch (error: any) {
-        handleSetCatchClause(dispatch, error, cb);
+        handleSetCatchClause(dispatch, error, failCb);
       } finally {
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
     })();
-  }, [type, cb]);
+  }, [type, failCb]);
 
   const useGetDocuments = useCallback(
     async (type: string) => {
@@ -65,12 +65,12 @@ export function useGetDocumentsHook(type: string, cb?: () => any) {
           querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
         );
       } catch (error: any) {
-        handleSetCatchClause(dispatch, error, cb);
+        handleSetCatchClause(dispatch, error, failCb);
       } finally {
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
     },
-    [type, cb],
+    [type, failCb],
   );
 
   return { documents, useGetDocuments };
@@ -80,10 +80,14 @@ export function useGetDocumentsHook(type: string, cb?: () => any) {
  * firebase document 가져오기 커스텀 훅
  * @param {string} type firebase document attribute name
  * @param {string} id firebase document id
- * @param {function} cb 에러팝업 콜백
+ * @param {function} failCb 에러팝업 콜백
  * @returns
  */
-export function useGetDocumentHook(type: string, id: string, cb?: () => any) {
+export function useGetDocumentHook(
+  type: string,
+  id: string,
+  failCb?: () => any,
+) {
   const dispatch = useDispatch();
   const [document, setDocument] = useState<any>(null);
   const d = doc(db, type, id);
@@ -98,19 +102,36 @@ export function useGetDocumentHook(type: string, id: string, cb?: () => any) {
           setDocument(docSnapshot.data());
         }
       } catch (error: any) {
-        handleSetCatchClause(dispatch, error, cb);
+        handleSetCatchClause(dispatch, error, failCb);
       } finally {
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
     })();
-  }, [type, id, cb]);
+  }, [type, id, failCb]);
 
-  return document;
+  const useGetDocument = useCallback(
+    async (type: string, id: string) => {
+      try {
+        dispatch(handleSetIsLoading({ isLoading: true }));
+        const docSnapshot = await getDoc(doc(db, type, id));
+
+        if (docSnapshot !== undefined && docSnapshot.exists()) {
+          setDocument(docSnapshot.data());
+        }
+      } catch (error: any) {
+        handleSetCatchClause(dispatch, error, failCb);
+      } finally {
+        dispatch(handleSetIsLoading({ isLoading: false }));
+      }
+    },
+    [type, failCb],
+  );
+
+  return { document, useGetDocument };
 }
 
 /**
  * firebase document 생성하기 커스텀 훅
- * @param {function | undefined} successCb 성공 콜백
  * @param {function | undefined} failCb 에러팝업 콜백
  * @returns
  */
@@ -163,8 +184,6 @@ export function useUpdateDocumentHook(failCb?: () => any) {
 
 /**
  * firebase document 삭제하기 커스텀 훅
- * @param {string} type firebase document attribute name
- * @param {function | undefined} successCb 성공 콜백
  * @param {function | undefined} failCb 에러팝업 콜백
  * @returns
  */

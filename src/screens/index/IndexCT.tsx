@@ -20,6 +20,8 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const [popupType, setPopupType] = useState<string | undefined>();
 
   const isSignIn = useAuthStateChangedHook(uid);
+  const useSignOut = useSignOutHook();
+
   const { documents: links, useGetDocuments: useGetLinks } =
     useGetDocumentsHook(collectionName);
 
@@ -29,7 +31,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const handleConfirmPopup = useSetConfirmPopup(() =>
     console.log('click cancel'),
   );
-  const useSignOut = useSignOutHook();
+
   const { isActivePopup, selectedId, xPos, yPos, useClickComponent } =
     useSetIsActivePopup();
 
