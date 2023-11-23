@@ -8,7 +8,7 @@ import {
   useSignOutHook,
   useAuthStateChangedHook,
   useDeleteDocumentHook,
-  useSetIsActivePopup,
+  useSetIsActivePopupHook,
   useUpdateDocumentHook,
 } from 'modules/customHooks';
 import { TypeKeyValueForm } from 'modules/types';
@@ -33,7 +33,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   );
 
   const { isActivePopup, selectedId, xPos, yPos, useClickComponent } =
-    useSetIsActivePopup();
+    useSetIsActivePopupHook();
 
   const handleClickCard = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,

@@ -13,30 +13,56 @@ import {
 } from 'firebase/firestore';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import {
-  handleSetCancelBtn,
-  handleSetConfirmBtn,
-  handleSetIsConfirmPopupActive,
   handleSetIsLoading,
   handleSetMessage,
+  handleSetConfirmBtn,
+  handleSetCancelBtn,
+  handleSetErrorBtn,
+  handleSetIsConfirmPopupActive,
+  handleSetIsErrorPopupActive,
 } from 'middlewares/reduxToolkits/commonSlice';
 import { handleSetUserInfo } from 'middlewares/reduxToolkits/userSlice';
 import {
   handleCreateUserWithEmailAndPassword,
-  handleEncryptValue,
-  handleSetCatchClause,
   handleSignInWithEmailAndPassword,
+  handleEncryptValue,
 } from './utils';
 import { auth, db } from './configs';
 import { TypeKeyValueForm } from './types';
 
 /**
+ * catch 절 처리 훅
+ * @returns
+ */
+export function useSetCatchClauseHook() {
+  const dispatch = useDispatch();
+
+  const useSetCatchClause = useCallback((error: any, cb?: () => any) => {
+    dispatch(handleSetMessage({ message: error.message }));
+    dispatch(handleSetIsErrorPopupActive({ isErrorPopupActive: true }));
+    dispatch(
+      handleSetErrorBtn({
+        callback: () => {
+          dispatch(handleSetIsErrorPopupActive({ isErrorPopupActive: false }));
+          dispatch(handleSetMessage({ message: '' }));
+          cb?.();
+        },
+      }),
+    );
+  }, []);
+
+  return useSetCatchClause;
+}
+
+/**
  * firebase documents 가져오기 커스텀 훅
  * @param {string} type firebase document attribute name
- * @param {function} failCb 에러팝업 콜백
+ * @param {function | undefined} failCb 에러팝업에 넘길 콜백
  * @returns
  */
 export function useGetDocumentsHook(type: string, failCb?: () => any) {
   const dispatch = useDispatch();
+  const useSetCatchClause = useSetCatchClauseHook();
   const [documents, setDocuments] = useState<any[]>([]);
   const q = query(collection(db, type));
 
@@ -49,7 +75,7 @@ export function useGetDocumentsHook(type: string, failCb?: () => any) {
           querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
         );
       } catch (error: any) {
-        handleSetCatchClause(dispatch, error, failCb);
+        useSetCatchClause(error, failCb);
       } finally {
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
@@ -65,7 +91,7 @@ export function useGetDocumentsHook(type: string, failCb?: () => any) {
           querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
         );
       } catch (error: any) {
-        handleSetCatchClause(dispatch, error, failCb);
+        useSetCatchClause(error, failCb);
       } finally {
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
@@ -80,7 +106,7 @@ export function useGetDocumentsHook(type: string, failCb?: () => any) {
  * firebase document 가져오기 커스텀 훅
  * @param {string} type firebase document attribute name
  * @param {string} id firebase document id
- * @param {function} failCb 에러팝업 콜백
+ * @param {function | undefined} failCb 에러팝업에 넘길 콜백
  * @returns
  */
 export function useGetDocumentHook(
@@ -89,6 +115,7 @@ export function useGetDocumentHook(
   failCb?: () => any,
 ) {
   const dispatch = useDispatch();
+  const useSetCatchClause = useSetCatchClauseHook();
   const [document, setDocument] = useState<any>(null);
   const d = doc(db, type, id);
 
@@ -102,7 +129,7 @@ export function useGetDocumentHook(
           setDocument(docSnapshot.data());
         }
       } catch (error: any) {
-        handleSetCatchClause(dispatch, error, failCb);
+        useSetCatchClause(error, failCb);
       } finally {
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
@@ -119,7 +146,7 @@ export function useGetDocumentHook(
           setDocument(docSnapshot.data());
         }
       } catch (error: any) {
-        handleSetCatchClause(dispatch, error, failCb);
+        useSetCatchClause(error, failCb);
       } finally {
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
@@ -132,11 +159,12 @@ export function useGetDocumentHook(
 
 /**
  * firebase document 생성하기 커스텀 훅
- * @param {function | undefined} failCb 에러팝업 콜백
+ * @param {function | undefined} failCb 에러팝업에 넘길 콜백
  * @returns
  */
 export function useAddDocumentHook(failCb?: () => any) {
   const dispatch = useDispatch();
+  const useSetCatchClause = useSetCatchClauseHook();
 
   const useAddDocument = useCallback(
     async (type: string, params: any, successCb?: () => any) => {
@@ -145,7 +173,7 @@ export function useAddDocumentHook(failCb?: () => any) {
         const { id } = await addDoc(collection(db, type), params);
         successCb?.();
       } catch (error: any) {
-        handleSetCatchClause(dispatch, error, failCb);
+        useSetCatchClause(error, failCb);
       } finally {
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
@@ -158,11 +186,12 @@ export function useAddDocumentHook(failCb?: () => any) {
 
 /**
  * firebase document 갱신하기 커스텀 훅
- * @param {function | undefined} failCb 에러팝업 콜백
+ * @param {function | undefined} failCb 에러팝업에 넘길 콜백
  * @returns
  */
 export function useUpdateDocumentHook(failCb?: () => any) {
   const dispatch = useDispatch();
+  const useSetCatchClause = useSetCatchClauseHook();
 
   const useUpdateDocument = useCallback(
     async (type: string, id: string, params: any, successCb?: () => any) => {
@@ -171,7 +200,7 @@ export function useUpdateDocumentHook(failCb?: () => any) {
         await updateDoc(doc(db, type, id), params);
         successCb?.();
       } catch (error: any) {
-        handleSetCatchClause(dispatch, error, failCb);
+        useSetCatchClause(error, failCb);
       } finally {
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
@@ -184,11 +213,12 @@ export function useUpdateDocumentHook(failCb?: () => any) {
 
 /**
  * firebase document 삭제하기 커스텀 훅
- * @param {function | undefined} failCb 에러팝업 콜백
+ * @param {function | undefined} failCb 에러팝업에 넘길 콜백
  * @returns
  */
 export function useDeleteDocumentHook(failCb?: () => any) {
   const dispatch = useDispatch();
+  const useSetCatchClause = useSetCatchClauseHook();
 
   const useDeleteDocument = useCallback(
     async (type: string, id: string, successCb?: () => any) => {
@@ -197,7 +227,7 @@ export function useDeleteDocumentHook(failCb?: () => any) {
         await deleteDoc(doc(db, type, id));
         successCb?.();
       } catch (error: any) {
-        handleSetCatchClause(dispatch, error, failCb);
+        useSetCatchClause(error, failCb);
       } finally {
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
@@ -210,7 +240,7 @@ export function useDeleteDocumentHook(failCb?: () => any) {
 
 /**
  * 확인 팝업 설정
- * @param {function | undefined} cancelCb Cancel 클릭 시 콜백
+ * @param {function | undefined} cancelCb 취소 버튼 콜백
  */
 export function useSetConfirmPopup(cancelCb?: () => any) {
   const dispatch = useDispatch();
@@ -302,6 +332,7 @@ export function useEnterKeyDownHook(value: any, cb: () => any) {
 export function useSignUpHook(signUpForm: TypeKeyValueForm) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const useSetCatchClause = useSetCatchClauseHook();
 
   // Sign Up 버튼 콜백 함수
   const useSignUp = useCallback(async () => {
@@ -319,7 +350,7 @@ export function useSignUpHook(signUpForm: TypeKeyValueForm) {
 
       navigate('/sign/in', { replace: true });
     } catch (error: any) {
-      handleSetCatchClause(dispatch, error);
+      useSetCatchClause(error);
     } finally {
       dispatch(handleSetIsLoading({ isLoading: false }));
     }
@@ -336,6 +367,7 @@ export function useSignUpHook(signUpForm: TypeKeyValueForm) {
 export function useSignInHook(signInForm: TypeKeyValueForm) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const useSetCatchClause = useSetCatchClauseHook();
 
   // Sign In 버튼 콜백 함수
   const useSignIn = useCallback(async () => {
@@ -354,7 +386,7 @@ export function useSignInHook(signInForm: TypeKeyValueForm) {
       dispatch(handleSetUserInfo({ uid, email: signInForm.email }));
       navigate('/', { replace: true });
     } catch (error: any) {
-      handleSetCatchClause(dispatch, error);
+      useSetCatchClause(error);
     } finally {
       dispatch(handleSetIsLoading({ isLoading: false }));
     }
@@ -370,6 +402,7 @@ export function useSignInHook(signInForm: TypeKeyValueForm) {
 export function useSignOutHook() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const useSetCatchClause = useSetCatchClauseHook();
 
   const useSignOut = useCallback(async () => {
     dispatch(handleSetIsLoading({ isLoading: true }));
@@ -378,7 +411,7 @@ export function useSignOutHook() {
       dispatch(handleSetUserInfo({ uid: '', email: '' }));
       navigate('/', { replace: true });
     } catch (error) {
-      handleSetCatchClause(dispatch, error);
+      useSetCatchClause(error);
     } finally {
       dispatch(handleSetIsLoading({ isLoading: false }));
     }
@@ -399,6 +432,7 @@ export function useAuthStateChangedHook(
 ): boolean {
   const [isSignIn, setIsSignIn] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const useSetCatchClause = useSetCatchClauseHook();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -407,7 +441,7 @@ export function useAuthStateChangedHook(
       else {
         setIsSignIn(false);
         if (isActiveErrorPopup) {
-          handleSetCatchClause(dispatch, Error('Sign In Required'));
+          useSetCatchClause(Error('Sign In Required'));
           throw Error('Sign In Required');
         }
       }
@@ -418,7 +452,11 @@ export function useAuthStateChangedHook(
   return isSignIn;
 }
 
-export function useSetIsActivePopup() {
+/**
+ * 팝업 상태 관리 훅
+ * @returns
+ */
+export function useSetIsActivePopupHook() {
   const [isActivePopup, setIsActivePopup] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<string | undefined>();
   const [xPos, setXPos] = useState<number | undefined>();
