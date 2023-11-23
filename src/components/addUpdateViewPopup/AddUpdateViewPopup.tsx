@@ -25,7 +25,7 @@ function AddUpdateViewPopup({
     title: '',
     url: '',
     description: ``,
-    category: '',
+    category: 0,
     degreeOfUnderstanding: 20,
     bookmark: 'N',
   });
@@ -59,7 +59,7 @@ function AddUpdateViewPopup({
         title: '',
         url: '',
         description: ``,
-        category: '',
+        category: 0,
         degreeOfUnderstanding: 20,
         bookmark: 'N',
       });
@@ -143,8 +143,8 @@ function AddUpdateViewPopup({
               name="category"
               value={form.category}
               onChange={useChange}
+              defaultValue={0}
             >
-              <option value="All">All</option>
               {Array.isArray(categories) &&
                 categories.length > 0 &&
                 categories.map(({ category, description }) => (
@@ -162,6 +162,7 @@ function AddUpdateViewPopup({
               name="bookmark"
               value={form.bookmark}
               onChange={useChange}
+              defaultValue={'N'}
             >
               <option value="N">N</option>
               <option value="Y">Y</option>
@@ -188,6 +189,7 @@ function AddUpdateViewPopup({
               name="degreeOfUnderstanding"
               value={form.degreeOfUnderstanding}
               onChange={useChange}
+              defaultValue={20}
             >
               DegreeOfUnderstanding
               {Array.isArray(degreeOfUnderstandings) &&

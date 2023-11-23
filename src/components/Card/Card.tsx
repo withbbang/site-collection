@@ -83,7 +83,7 @@ interface TypeCard {
   isSignIn: boolean;
   id: string;
   title?: string;
-  category?: string;
+  category?: number;
   degreeOfUnderstanding?: number;
   bookmark?: string;
   createDt?: any;

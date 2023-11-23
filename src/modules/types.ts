@@ -15,7 +15,7 @@ export interface TypeLink {
   title: string;
   url: string;
   description: string;
-  category: string;
+  category: number;
   degreeOfUnderstanding: number;
   bookmark: string;
   createDt: any;

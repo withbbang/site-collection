@@ -125,6 +125,23 @@ export function handleReturnDegree(degree: number | string): string {
 }
 
 /**
+ * 단일 데이터 유효성 검사 하는 함수
+ * @param {any} data 유효성 검사할 값
+ * @returns {boolean} 유효성 검사 성공: true / 유효성 검사 실패: false
+ */
+export function handleCheckValidData(data: any): boolean {
+  switch (data) {
+    case '':
+    case null:
+    case undefined:
+    case {}:
+      return false;
+    default:
+      return true;
+  }
+}
+
+/**
  * API 요청 전 유효성 검사 하는 함수
  * @param {TypeKeyValueForm} data 유효성 검사할 객체
  */
@@ -132,7 +149,7 @@ export function handleCheckValidForm(data: TypeKeyValueForm) {
   const keysArray = Object.keys(data);
   const valuesArray = Object.values(data);
 
-  const index = valuesArray.findIndex((value) => !value);
+  const index = valuesArray.findIndex((value) => !handleCheckValidData(value));
 
   if (index > -1)
     throw Error(
