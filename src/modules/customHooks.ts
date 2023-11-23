@@ -26,6 +26,7 @@ import {
   handleCreateUserWithEmailAndPassword,
   handleSignInWithEmailAndPassword,
   handleEncryptValue,
+  handleCheckValidForm,
 } from './utils';
 import { auth, db } from './configs';
 import { TypeKeyValueForm } from './types';
@@ -169,6 +170,8 @@ export function useAddDocumentHook(failCb?: () => any) {
   const useAddDocument = useCallback(
     async (type: string, params: any, successCb?: () => any) => {
       try {
+        handleCheckValidForm(params);
+
         dispatch(handleSetIsLoading({ isLoading: true }));
         const { id } = await addDoc(collection(db, type), params);
         successCb?.();
@@ -196,6 +199,8 @@ export function useUpdateDocumentHook(failCb?: () => any) {
   const useUpdateDocument = useCallback(
     async (type: string, id: string, params: any, successCb?: () => any) => {
       try {
+        handleCheckValidForm(params);
+
         dispatch(handleSetIsLoading({ isLoading: true }));
         await updateDoc(doc(db, type, id), params);
         successCb?.();
@@ -338,8 +343,7 @@ export function useSignUpHook(signUpForm: TypeKeyValueForm) {
   const useSignUp = useCallback(async () => {
     dispatch(handleSetIsLoading({ isLoading: true }));
     try {
-      if (!signUpForm.email) throw Error('Empty Email Field');
-      if (!signUpForm.password) throw Error('Empty Password Field');
+      handleCheckValidForm(signUpForm);
 
       const {
         user: { uid },
@@ -373,8 +377,7 @@ export function useSignInHook(signInForm: TypeKeyValueForm) {
   const useSignIn = useCallback(async () => {
     dispatch(handleSetIsLoading({ isLoading: true }));
     try {
-      if (!signInForm.email) throw Error('Empty Email Field');
-      if (!signInForm.password) throw Error('Empty Password Field');
+      handleCheckValidForm(signInForm);
 
       const {
         user: { uid },

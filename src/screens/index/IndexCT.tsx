@@ -28,7 +28,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const useAddDocument = useAddDocumentHook(() => console.log('failCb'));
   const useUpdateDocument = useUpdateDocumentHook(() => console.log('failCb'));
   const useDeleteDocument = useDeleteDocumentHook(() => console.log('failCb'));
-  const handleConfirmPopup = useSetConfirmPopup(() =>
+  const handleSetConfirmPopup = useSetConfirmPopup(() =>
     console.log('click cancel'),
   );
 
@@ -49,7 +49,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     form: TypeKeyValueForm,
   ) => {
-    handleConfirmPopup('Really Add Document?', () => {
+    handleSetConfirmPopup('Really Add Document?', () => {
       useAddDocument(collectionName, { ...form, createDt: new Date() }, () => {
         useGetLinks(collectionName);
         useClickComponent(e);
@@ -63,7 +63,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     form: TypeKeyValueForm,
   ) => {
     e.stopPropagation();
-    handleConfirmPopup('Really Update Document?', () => {
+    handleSetConfirmPopup('Really Update Document?', () => {
       useUpdateDocument(
         collectionName,
         id,
@@ -81,7 +81,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     id: string,
   ) => {
     e.stopPropagation();
-    handleConfirmPopup('Really Delete Document?', () => {
+    handleSetConfirmPopup('Really Delete Document?', () => {
       useDeleteDocument(collectionName, id, () => useGetLinks(collectionName));
     });
   };

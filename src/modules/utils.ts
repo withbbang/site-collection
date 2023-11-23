@@ -3,14 +3,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import {
-  handleSetMessage,
-  handleSetErrorBtn,
-  handleSetIsErrorPopupActive,
-} from 'middlewares/reduxToolkits/commonSlice';
-import { Dispatch } from 'react';
-import { AnyAction } from 'redux';
 import { auth } from './configs';
+import { TypeKeyValueForm } from './types';
 
 /**
  * 11자리 임의의 문자열 반환 함수
@@ -128,4 +122,20 @@ export function handleReturnDegree(degree: number | string): string {
     default:
       return 'Basic';
   }
+}
+
+/**
+ * API 요청 전 유효성 검사 하는 함수
+ * @param {TypeKeyValueForm} data 유효성 검사할 객체
+ */
+export function handleCheckValidForm(data: TypeKeyValueForm) {
+  const keysArray = Object.keys(data);
+  const valuesArray = Object.values(data);
+
+  const index = valuesArray.findIndex((value) => !value);
+
+  if (index > -1)
+    throw Error(
+      `Empty ${handleSetUpperCaseFirstCharacter(keysArray[index])} Field`,
+    );
 }
