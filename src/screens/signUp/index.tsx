@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
-import { CommonState } from 'middlewares/reduxToolkits/commonSlice';
+import { UserState } from 'middlewares/reduxToolkits/userSlice';
 import { PropState } from 'middlewares/configureReducer';
 import {
   useEnterKeyDownHook,
@@ -13,8 +13,8 @@ import Back from 'components/back/Back';
 import AuthInput from 'components/authInput/AuthInput';
 import styles from './SignUp.module.scss';
 
-function mapStateToProps(state: PropState): CommonState {
-  return { ...state.common };
+function mapStateToProps(state: PropState): UserState {
+  return { ...state.user };
 }
 
 function mapDispatchToProps(dispatch: (actionFunction: Action<any>) => any) {
@@ -56,6 +56,6 @@ function SignUp({ uid }: TypeSignUp): React.JSX.Element {
   );
 }
 
-interface TypeSignUp extends CommonState {}
+interface TypeSignUp extends UserState {}
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

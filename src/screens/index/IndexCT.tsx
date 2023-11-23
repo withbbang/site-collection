@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CommonState } from 'middlewares/reduxToolkits/commonSlice';
+import { UserState } from 'middlewares/reduxToolkits/userSlice';
 import {
   useSetConfirmPopup,
   useAddDocumentHook,
@@ -15,12 +15,13 @@ import { TypeKeyValueForm } from 'modules/types';
 import IndexPT from './IndexPT';
 
 function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
+  const collectionName = 'Links';
   const navigate = useNavigate();
   const [popupType, setPopupType] = useState<string | undefined>();
 
   const isSignIn = useAuthStateChangedHook(uid);
   const { documents: links, useGetDocuments: useGetLinks } =
-    useGetDocumentsHook('Links');
+    useGetDocumentsHook(collectionName);
 
   const useAddDocument = useAddDocumentHook(() => console.log('failCb'));
   const useUpdateDocument = useUpdateDocumentHook(() => console.log('failCb'));
@@ -47,11 +48,11 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     form: TypeKeyValueForm,
   ) => {
     handleConfirmPopup('Really Add Document?', () => {
-      useAddDocument('Links', { ...form, createDt: new Date() }, () =>
-        useGetLinks('Links'),
-      );
+      useAddDocument(collectionName, { ...form, createDt: new Date() }, () => {
+        useGetLinks(collectionName);
+        useClickComponent(e);
+      });
     });
-    useClickComponent(e);
   };
 
   const handleUpdateDocument = (
@@ -61,10 +62,15 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   ) => {
     e.stopPropagation();
     handleConfirmPopup('Really Update Document?', () => {
-      useUpdateDocument('Links', id, { ...form, updateDt: new Date() }, () => {
-        useGetLinks('Links');
-        useClickComponent(e);
-      });
+      useUpdateDocument(
+        collectionName,
+        id,
+        { ...form, updateDt: new Date() },
+        () => {
+          useGetLinks(collectionName);
+          useClickComponent(e);
+        },
+      );
     });
   };
 
@@ -74,7 +80,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   ) => {
     e.stopPropagation();
     handleConfirmPopup('Really Delete Document?', () => {
-      useDeleteDocument('Links', id, () => useGetLinks('Links'));
+      useDeleteDocument(collectionName, id, () => useGetLinks(collectionName));
     });
   };
 
@@ -110,6 +116,6 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   );
 }
 
-interface typeIndexCT extends CommonState {}
+interface typeIndexCT extends UserState {}
 
 export default IndexCT;

@@ -18,8 +18,8 @@ import {
   handleSetIsConfirmPopupActive,
   handleSetIsLoading,
   handleSetMessage,
-  handleSetUserInfo,
 } from 'middlewares/reduxToolkits/commonSlice';
+import { handleSetUserInfo } from 'middlewares/reduxToolkits/userSlice';
 import {
   handleCreateUserWithEmailAndPassword,
   handleEncryptValue,

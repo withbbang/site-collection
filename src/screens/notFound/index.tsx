@@ -1,12 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import SVG from 'modules/SVG';
 import Back from 'components/back/Back';
 import styles from './NotFound.module.scss';
 
 function NotFound(): React.JSX.Element {
-  const navigate = useNavigate();
-
   return (
     <div className={styles.wrap}>
       <Back />
