@@ -1,6 +1,11 @@
 import React from 'react';
-import { TypeKeyValueForm, TypeLink } from 'modules/types';
-import { useGetDocumentsHook, useChangeHook } from 'modules/customHooks';
+import {
+  TypeCategory,
+  TypeDegreeOfUnderstanding,
+  TypeKeyValueForm,
+  TypeLink,
+} from 'modules/types';
+import { useChangeHook } from 'modules/customHooks';
 import styles from './AddUpdateViewPopup.module.scss';
 
 function AddUpdateViewPopup({
@@ -9,6 +14,8 @@ function AddUpdateViewPopup({
   xPos,
   yPos,
   link,
+  categories,
+  degreeOfUnderstandings,
   onClickCard,
   onAddDocument,
   onUpdateDocument,
@@ -16,17 +23,13 @@ function AddUpdateViewPopup({
   const ref = React.useRef(
     null,
   ) as React.MutableRefObject<HTMLDivElement | null>;
-  const { documents: categories } = useGetDocumentsHook('Categories');
-  const { documents: degreeOfUnderstandings } = useGetDocumentsHook(
-    'DegreeOfUnderstanding',
-  );
 
   const { form, setForm, useChange } = useChangeHook({
     title: '',
     url: '',
     description: ``,
-    category: 0,
-    degreeOfUnderstanding: 20,
+    category: '0',
+    degreeOfUnderstanding: '20',
     bookmark: 'N',
   });
 
@@ -59,8 +62,8 @@ function AddUpdateViewPopup({
         title: '',
         url: '',
         description: ``,
-        category: 0,
-        degreeOfUnderstanding: 20,
+        category: '0',
+        degreeOfUnderstanding: '20',
         bookmark: 'N',
       });
     }
@@ -143,12 +146,12 @@ function AddUpdateViewPopup({
               name="category"
               value={form.category}
               onChange={useChange}
-              defaultValue={0}
+              defaultValue="0"
             >
               {Array.isArray(categories) &&
                 categories.length > 0 &&
-                categories.map(({ category, description }) => (
-                  <option key={category} value={category}>
+                categories.map(({ id, category, description }) => (
+                  <option key={id} value={category}>
                     {description}
                   </option>
                 ))}
@@ -162,7 +165,7 @@ function AddUpdateViewPopup({
               name="bookmark"
               value={form.bookmark}
               onChange={useChange}
-              defaultValue={'N'}
+              defaultValue="N"
             >
               <option value="N">N</option>
               <option value="Y">Y</option>
@@ -189,13 +192,13 @@ function AddUpdateViewPopup({
               name="degreeOfUnderstanding"
               value={form.degreeOfUnderstanding}
               onChange={useChange}
-              defaultValue={20}
+              defaultValue="20"
             >
               DegreeOfUnderstanding
               {Array.isArray(degreeOfUnderstandings) &&
                 degreeOfUnderstandings.length > 0 &&
-                degreeOfUnderstandings.map(({ grade, description }) => (
-                  <option key={description} value={grade}>
+                degreeOfUnderstandings.map(({ id, grade, description }) => (
+                  <option key={id} value={grade}>
                     {description}
                   </option>
                 ))}
@@ -223,6 +226,8 @@ interface TypeAddUpdateViewPopup {
   xPos?: number;
   yPos?: number;
   link?: TypeLink;
+  categories: Array<TypeCategory>;
+  degreeOfUnderstandings: Array<TypeDegreeOfUnderstanding>;
   onClickCard: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     type?: string,

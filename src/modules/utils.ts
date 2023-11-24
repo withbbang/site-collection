@@ -101,27 +101,33 @@ export async function handleSignInWithEmailAndPassword(
 }
 
 /**
- * 이해 등급 반환 함수
- * @param {number | string} degree 이해 등급
- * @returns {string}
+ * DB에 저장돼있는 value 값을 설명으로 변환하는 함수
+ * @param {string | undefined} value 설명에 해당하는 값
+ * @param {Array<any> | undefined} collection 설명과 값이 함께 들어있는 배열
+ * @returns {string} 설명 반환
  */
-export function handleReturnDegree(degree: number | string): string {
-  switch (degree) {
-    case 0:
-    case '0':
-      return 'Mastery';
-    case 5:
-    case '5':
-      return 'Expert';
-    case 10:
-    case '10':
-      return 'Advanced';
-    case 15:
-    case '15':
-      return 'Intermediate';
-    default:
-      return 'Basic';
-  }
+export function handleRetrunCorrespondingDescription(
+  value?: string,
+  collection?: Array<any>,
+): string {
+  let data = '';
+  let realKey;
+
+  collection?.some((item) => {
+    const keysArray = Object.keys(item);
+
+    const fakeKey = keysArray.filter((key) => item[key] === value)?.[0];
+
+    if (fakeKey) {
+      [realKey] = keysArray.filter((key) => key !== fakeKey);
+      data = item[realKey];
+      return true;
+    } else {
+      return false;
+    }
+  });
+
+  return data;
 }
 
 /**

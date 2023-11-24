@@ -1,6 +1,11 @@
 import React from 'react';
 import Card from 'components/card/Card';
-import { TypeKeyValueForm, TypeLink } from 'modules/types';
+import {
+  TypeCategory,
+  TypeDegreeOfUnderstanding,
+  TypeKeyValueForm,
+  TypeLink,
+} from 'modules/types';
 import AddUpdateViewPopup from 'components/addUpdateViewPopup/AddUpdateViewPopup';
 import styles from './Index.module.scss';
 
@@ -8,6 +13,8 @@ function IndexPT({
   isSignIn,
   popupType,
   links,
+  categories,
+  degreeOfUnderstandings,
   isActivePopup,
   selectedId,
   xPos,
@@ -28,6 +35,8 @@ function IndexPT({
         yPos={yPos}
         popupType={popupType}
         link={links.filter((link) => link.id === selectedId)[0]}
+        categories={categories}
+        degreeOfUnderstandings={degreeOfUnderstandings}
         onClickCard={onClickCard}
         onAddDocument={onAddDocument}
         onUpdateDocument={onUpdateDocument}
@@ -71,6 +80,8 @@ function IndexPT({
                   degreeOfUnderstanding={degreeOfUnderstanding}
                   bookmark={bookmark}
                   createDt={createDt}
+                  categories={categories}
+                  degreeOfUnderstandings={degreeOfUnderstandings}
                   onDeleteDocument={onDeleteDocument}
                   onClickCard={onClickCard}
                 />
@@ -86,6 +97,8 @@ interface typeIndexPT {
   isSignIn: boolean;
   popupType?: string;
   links: Array<TypeLink>;
+  categories: Array<TypeCategory>;
+  degreeOfUnderstandings: Array<TypeDegreeOfUnderstanding>;
   isActivePopup: boolean;
   selectedId: string | undefined;
   xPos: number | undefined;

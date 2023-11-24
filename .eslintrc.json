@@ -18,6 +18,7 @@
     "no-use-before-define": "warn",
     "no-nested-ternary": "warn",
     "no-empty-pattern": "warn",
+    "no-else-return": "warn",
     "no-unused-vars": "warn",
     "no-shadow": "warn",
     "no-tabs": "off",

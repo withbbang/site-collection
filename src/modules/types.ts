@@ -7,7 +7,7 @@ export interface TypeSVG {
 }
 
 export interface TypeKeyValueForm {
-  [key: string]: string | number;
+  [key: string]: number | string;
 }
 
 export interface TypeLink {
@@ -15,8 +15,8 @@ export interface TypeLink {
   title: string;
   url: string;
   description: string;
-  category: number;
-  degreeOfUnderstanding: number;
+  category: string;
+  degreeOfUnderstanding: string;
   bookmark: string;
   createDt: any;
 }
@@ -24,5 +24,11 @@ export interface TypeLink {
 export interface TypeCategory {
   id: string;
   category: string;
+  description: string;
+}
+
+export interface TypeDegreeOfUnderstanding {
+  id: string;
+  grade: string;
   description: string;
 }

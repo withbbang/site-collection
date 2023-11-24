@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserState } from 'middlewares/reduxToolkits/userSlice';
 import {
-  useSetConfirmPopup,
+  useSetConfirmPopupHook,
   useAddDocumentHook,
   useGetDocumentsHook,
   useSignOutHook,
@@ -24,11 +24,15 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
 
   const { documents: links, useGetDocuments: useGetLinks } =
     useGetDocumentsHook(collectionName);
+  const { documents: degreeOfUnderstandings } = useGetDocumentsHook(
+    'DegreeOfUnderstandings',
+  );
+  const { documents: categories } = useGetDocumentsHook('Categories');
 
   const useAddDocument = useAddDocumentHook(() => console.log('failCb'));
   const useUpdateDocument = useUpdateDocumentHook(() => console.log('failCb'));
   const useDeleteDocument = useDeleteDocumentHook(() => console.log('failCb'));
-  const handleSetConfirmPopup = useSetConfirmPopup(() =>
+  const useSetConfirmPopup = useSetConfirmPopupHook(() =>
     console.log('click cancel'),
   );
 
@@ -49,7 +53,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     form: TypeKeyValueForm,
   ) => {
-    handleSetConfirmPopup('Really Add Document?', () => {
+    useSetConfirmPopup('Really Add Document?', () => {
       useAddDocument(collectionName, { ...form, createDt: new Date() }, () => {
         useGetLinks(collectionName);
         useClickComponent(e);
@@ -63,7 +67,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     form: TypeKeyValueForm,
   ) => {
     e.stopPropagation();
-    handleSetConfirmPopup('Really Update Document?', () => {
+    useSetConfirmPopup('Really Update Document?', () => {
       useUpdateDocument(
         collectionName,
         id,
@@ -81,7 +85,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     id: string,
   ) => {
     e.stopPropagation();
-    handleSetConfirmPopup('Really Delete Document?', () => {
+    useSetConfirmPopup('Really Delete Document?', () => {
       useDeleteDocument(collectionName, id, () => useGetLinks(collectionName));
     });
   };
@@ -103,6 +107,8 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
       isSignIn={isSignIn}
       popupType={popupType}
       links={links}
+      categories={categories}
+      degreeOfUnderstandings={degreeOfUnderstandings}
       isActivePopup={isActivePopup}
       selectedId={selectedId}
       xPos={xPos}

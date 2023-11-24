@@ -247,7 +247,7 @@ export function useDeleteDocumentHook(failCb?: () => any) {
  * 확인 팝업 설정
  * @param {function | undefined} cancelCb 취소 버튼 콜백
  */
-export function useSetConfirmPopup(cancelCb?: () => any) {
+export function useSetConfirmPopupHook(cancelCb?: () => any) {
   const dispatch = useDispatch();
 
   const setConfirmPopup = useCallback(
@@ -291,7 +291,7 @@ export function useSetConfirmPopup(cancelCb?: () => any) {
 export function useChangeHook(keyValueForm: TypeKeyValueForm) {
   const [form, setForm] = useState<TypeKeyValueForm>(keyValueForm);
 
-  // email, password onChange 콜백 함수
+  // input, textarea, select onChange 콜백 함수
   const useChange = useCallback(
     (
       e:

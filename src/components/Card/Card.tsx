@@ -1,5 +1,9 @@
 import React from 'react';
-import { handleConvertTimestamp, handleReturnDegree } from 'modules/utils';
+import {
+  handleConvertTimestamp,
+  handleRetrunCorrespondingDescription,
+} from 'modules/utils';
+import { TypeCategory, TypeDegreeOfUnderstanding } from 'modules/types';
 import SVG from 'modules/SVG';
 import styles from './Card.module.scss';
 
@@ -11,6 +15,8 @@ function Card({
   degreeOfUnderstanding,
   bookmark,
   createDt,
+  categories,
+  degreeOfUnderstandings,
   onDeleteDocument,
   onClickCard,
 }: TypeCard): React.JSX.Element {
@@ -29,7 +35,7 @@ function Card({
             <span>
               <SVG type="category" width="20px" height="20px" />
               &nbsp;
-              {category}
+              {handleRetrunCorrespondingDescription(category, categories)}
             </span>
           </div>
           {isSignIn && (
@@ -57,8 +63,10 @@ function Card({
                 <>
                   <SVG type="degree" width="25px" height="25px" />
                   &nbsp;&nbsp;
-                  {degreeOfUnderstanding &&
-                    handleReturnDegree(degreeOfUnderstanding)}
+                  {handleRetrunCorrespondingDescription(
+                    degreeOfUnderstanding,
+                    degreeOfUnderstandings,
+                  )}
                 </>
               )}
             </span>
@@ -83,10 +91,12 @@ interface TypeCard {
   isSignIn: boolean;
   id: string;
   title?: string;
-  category?: number;
-  degreeOfUnderstanding?: number;
+  category?: string;
+  degreeOfUnderstanding?: string;
   bookmark?: string;
   createDt?: any;
+  categories?: Array<TypeCategory>;
+  degreeOfUnderstandings?: Array<TypeDegreeOfUnderstanding>;
   onDeleteDocument?: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string,
@@ -104,6 +114,8 @@ Card.defaultProps = {
   degreeOfUnderstanding: 20,
   bookmark: '',
   createDt: undefined,
+  categories: undefined,
+  degreeOfUnderstandings: undefined,
   onDeleteDocument: undefined,
 };
 
