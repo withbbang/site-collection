@@ -101,13 +101,13 @@ export async function handleSignInWithEmailAndPassword(
 }
 
 /**
- * DB에 저장돼있는 value 값을 설명으로 변환하는 함수
+ * DB에 저장돼있는 value(grade, category) 값을 설명으로 변환하는 함수
  * @param {string | undefined} value 설명에 해당하는 값
  * @param {Array<any> | undefined} collection 설명과 값이 함께 들어있는 배열
  * @returns {string} 설명 반환
  */
 export function handleRetrunCorrespondingDescription(
-  value?: string,
+  value?: number,
   collection?: Array<any>,
 ): string {
   let data = '';
@@ -116,7 +116,9 @@ export function handleRetrunCorrespondingDescription(
   collection?.some((item) => {
     const keysArray = Object.keys(item);
 
-    const fakeKey = keysArray.filter((key) => item[key] === value)?.[0];
+    const fakeKey = keysArray.filter(
+      (key) => `${item[key]}` === `${value}`,
+    )?.[0];
 
     if (fakeKey) {
       [realKey] = keysArray.filter((key) => key !== fakeKey);

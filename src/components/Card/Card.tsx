@@ -91,8 +91,8 @@ interface TypeCard {
   isSignIn: boolean;
   id: string;
   title?: string;
-  category?: string;
-  degreeOfUnderstanding?: string;
+  category?: number;
+  degreeOfUnderstanding?: number;
   bookmark?: string;
   createDt?: any;
   categories?: Array<TypeCategory>;
@@ -110,7 +110,7 @@ interface TypeCard {
 
 Card.defaultProps = {
   title: '',
-  category: '',
+  category: 0,
   degreeOfUnderstanding: 20,
   bookmark: '',
   createDt: undefined,

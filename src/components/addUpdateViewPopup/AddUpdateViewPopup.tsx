@@ -28,8 +28,8 @@ function AddUpdateViewPopup({
     title: '',
     url: '',
     description: ``,
-    category: '0',
-    degreeOfUnderstanding: '20',
+    category: 0,
+    degreeOfUnderstanding: 20,
     bookmark: 'N',
   });
 
@@ -62,8 +62,8 @@ function AddUpdateViewPopup({
         title: '',
         url: '',
         description: ``,
-        category: '0',
-        degreeOfUnderstanding: '20',
+        category: 0,
+        degreeOfUnderstanding: 20,
         bookmark: 'N',
       });
     }
@@ -150,7 +150,7 @@ function AddUpdateViewPopup({
               {Array.isArray(categories) &&
                 categories.length > 0 &&
                 categories.map(({ id, category, description }) => (
-                  <option key={id} value={category}>
+                  <option key={id} value={+category}>
                     {description}
                   </option>
                 ))}
@@ -195,7 +195,7 @@ function AddUpdateViewPopup({
               {Array.isArray(degreeOfUnderstandings) &&
                 degreeOfUnderstandings.length > 0 &&
                 degreeOfUnderstandings.map(({ id, grade, description }) => (
-                  <option key={id} value={grade}>
+                  <option key={id} value={+grade}>
                     {description}
                   </option>
                 ))}

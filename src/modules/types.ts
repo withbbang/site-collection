@@ -15,20 +15,20 @@ export interface TypeLink {
   title: string;
   url: string;
   description: string;
-  category: string;
-  degreeOfUnderstanding: string;
+  category: number;
+  degreeOfUnderstanding: number;
   bookmark: string;
   createDt: any;
 }
 
 export interface TypeCategory {
   id: string;
-  category: string;
+  category: number;
   description: string;
 }
 
 export interface TypeDegreeOfUnderstanding {
   id: string;
-  grade: string;
+  grade: number;
   description: string;
 }
