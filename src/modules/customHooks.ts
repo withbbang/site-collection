@@ -2,12 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
+  OrderByDirection,
   addDoc,
   collection,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
+  orderBy,
   query,
   updateDoc,
 } from 'firebase/firestore';
@@ -61,14 +63,24 @@ export function useSetCatchClauseHook() {
  * @param {function | undefined} failCb 에러팝업에 넘길 콜백
  * @returns
  */
-export function useGetDocumentsHook(type: string, failCb?: () => any) {
+export function useGetDocumentsHook(
+  type: string,
+  columnNmForOrder?: string,
+  directionForOrder?: OrderByDirection,
+  failCb?: () => any,
+) {
   const dispatch = useDispatch();
   const useSetCatchClause = useSetCatchClauseHook();
   const [documents, setDocuments] = useState<any[]>([]);
-  const q = query(collection(db, type));
+  const order = orderBy(
+    columnNmForOrder !== undefined ? columnNmForOrder : 'createDt',
+    directionForOrder !== undefined ? directionForOrder : 'desc',
+  );
+  const q = query(collection(db, type), order);
 
   useEffect(() => {
     (async () => {
+      console.log(`${type} ${columnNmForOrder} ${directionForOrder}`);
       try {
         dispatch(handleSetIsLoading({ isLoading: true }));
         const querySnapshot = await getDocs(q);
@@ -81,13 +93,13 @@ export function useGetDocumentsHook(type: string, failCb?: () => any) {
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
     })();
-  }, [type, failCb]);
+  }, []);
 
   const useGetDocuments = useCallback(
-    async (type: string) => {
+    async (failCb?: () => any) => {
       try {
         dispatch(handleSetIsLoading({ isLoading: true }));
-        const querySnapshot = await getDocs(collection(db, type));
+        const querySnapshot = await getDocs(query(collection(db, type), order));
         setDocuments(
           querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
         );
@@ -97,7 +109,7 @@ export function useGetDocumentsHook(type: string, failCb?: () => any) {
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
     },
-    [type, failCb],
+    [documents],
   );
 
   return { documents, useGetDocuments };
@@ -135,10 +147,10 @@ export function useGetDocumentHook(
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
     })();
-  }, [type, id, failCb]);
+  }, []);
 
   const useGetDocument = useCallback(
-    async (type: string, id: string) => {
+    async (id: string, failCb?: () => any) => {
       try {
         dispatch(handleSetIsLoading({ isLoading: true }));
         const docSnapshot = await getDoc(doc(db, type, id));
@@ -152,7 +164,7 @@ export function useGetDocumentHook(
         dispatch(handleSetIsLoading({ isLoading: false }));
       }
     },
-    [type, failCb],
+    [document],
   );
 
   return { document, useGetDocument };
@@ -303,7 +315,7 @@ export function useChangeHook(keyValueForm: TypeKeyValueForm) {
 
       setForm((prevState) => ({ ...prevState, [name]: value.trim() }));
     },
-    [keyValueForm],
+    [form, keyValueForm],
   );
 
   return { form, setForm, useChange };

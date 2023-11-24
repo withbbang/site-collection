@@ -146,7 +146,6 @@ function AddUpdateViewPopup({
               name="category"
               value={form.category}
               onChange={useChange}
-              defaultValue="0"
             >
               {Array.isArray(categories) &&
                 categories.length > 0 &&
@@ -165,7 +164,6 @@ function AddUpdateViewPopup({
               name="bookmark"
               value={form.bookmark}
               onChange={useChange}
-              defaultValue="N"
             >
               <option value="N">N</option>
               <option value="Y">Y</option>
@@ -192,7 +190,6 @@ function AddUpdateViewPopup({
               name="degreeOfUnderstanding"
               value={form.degreeOfUnderstanding}
               onChange={useChange}
-              defaultValue="20"
             >
               DegreeOfUnderstanding
               {Array.isArray(degreeOfUnderstandings) &&

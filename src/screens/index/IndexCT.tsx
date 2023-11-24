@@ -15,7 +15,7 @@ import { TypeKeyValueForm } from 'modules/types';
 import IndexPT from './IndexPT';
 
 function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
-  const collectionName = 'Links';
+  const COLLECTION_NAME = 'Links';
   const navigate = useNavigate();
   const [popupType, setPopupType] = useState<string | undefined>();
 
@@ -23,11 +23,17 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const useSignOut = useSignOutHook();
 
   const { documents: links, useGetDocuments: useGetLinks } =
-    useGetDocumentsHook(collectionName);
+    useGetDocumentsHook(COLLECTION_NAME);
   const { documents: degreeOfUnderstandings } = useGetDocumentsHook(
     'DegreeOfUnderstandings',
+    'grade',
+    'desc',
   );
-  const { documents: categories } = useGetDocumentsHook('Categories');
+  const { documents: categories } = useGetDocumentsHook(
+    'Categories',
+    'category',
+    'asc',
+  );
 
   const useAddDocument = useAddDocumentHook(() => console.log('failCb'));
   const useUpdateDocument = useUpdateDocumentHook(() => console.log('failCb'));
@@ -54,8 +60,8 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     form: TypeKeyValueForm,
   ) => {
     useSetConfirmPopup('Really Add Document?', () => {
-      useAddDocument(collectionName, { ...form, createDt: new Date() }, () => {
-        useGetLinks(collectionName);
+      useAddDocument(COLLECTION_NAME, { ...form, createDt: new Date() }, () => {
+        useGetLinks();
         useClickComponent(e);
       });
     });
@@ -69,11 +75,11 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     e.stopPropagation();
     useSetConfirmPopup('Really Update Document?', () => {
       useUpdateDocument(
-        collectionName,
+        COLLECTION_NAME,
         id,
         { ...form, updateDt: new Date() },
         () => {
-          useGetLinks(collectionName);
+          useGetLinks();
           useClickComponent(e);
         },
       );
@@ -86,7 +92,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   ) => {
     e.stopPropagation();
     useSetConfirmPopup('Really Delete Document?', () => {
-      useDeleteDocument(collectionName, id, () => useGetLinks(collectionName));
+      useDeleteDocument(COLLECTION_NAME, id, () => useGetLinks());
     });
   };
 
