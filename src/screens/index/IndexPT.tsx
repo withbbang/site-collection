@@ -12,6 +12,7 @@ import styles from './Index.module.scss';
 function IndexPT({
   isSignIn,
   popupType,
+  form,
   links,
   categories,
   degreeOfUnderstandings,
@@ -26,6 +27,7 @@ function IndexPT({
   onUpdateDocument,
   onDeleteDocument,
   onClickCard,
+  onChange,
 }: typeIndexPT): React.JSX.Element {
   return (
     <>
@@ -56,7 +58,62 @@ function IndexPT({
           )}
         </div>
         <h1>Site Link Collection</h1>
-        <div className={styles.conditionDiv}></div>
+        <div className={styles.conditionDiv}>
+          <label htmlFor="title">
+            <input
+              id="title"
+              name="title"
+              value={form.title}
+              onChange={onChange}
+            />
+          </label>
+          <label htmlFor="category">
+            <select
+              id="category"
+              name="category"
+              value={form.category}
+              onChange={onChange}
+            >
+              {Array.isArray(categories) &&
+                categories.length > 0 &&
+                categories.map(({ id, category, description }) => (
+                  <option key={id} value={+category}>
+                    {description}
+                  </option>
+                ))}
+            </select>
+          </label>
+          <label htmlFor="degreeOfUnderstanding">
+            <select
+              id="degreeOfUnderstanding"
+              name="degreeOfUnderstanding"
+              value={form.degreeOfUnderstanding}
+              onChange={onChange}
+            >
+              <option value="">All</option>
+              {Array.isArray(degreeOfUnderstandings) &&
+                degreeOfUnderstandings.length > 0 &&
+                degreeOfUnderstandings.map(({ id, grade, description }) => (
+                  <option key={id} value={+grade}>
+                    {description}
+                  </option>
+                ))}
+            </select>
+          </label>
+          <label htmlFor="bookmark">
+            <select
+              id="bookmark"
+              name="bookmark"
+              value={form.bookmark}
+              onChange={onChange}
+            >
+              <option value="">All</option>
+              <option value="N">N</option>
+              <option value="Y">Y</option>
+            </select>
+          </label>
+          <button>Search</button>
+        </div>
         <div className={styles.innerWrap}>
           {isSignIn && (
             <Card isSignIn={isSignIn} id="0" onClickCard={onClickCard} />
@@ -97,6 +154,7 @@ function IndexPT({
 interface typeIndexPT {
   isSignIn: boolean;
   popupType?: string;
+  form: TypeKeyValueForm;
   links: Array<TypeLink>;
   categories: Array<TypeCategory>;
   degreeOfUnderstandings: Array<TypeDegreeOfUnderstanding>;
@@ -125,6 +183,12 @@ interface typeIndexPT {
   onDeleteDocument: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string,
+  ) => void;
+  onChange: (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLSelectElement>,
   ) => void;
 }
 

@@ -12,6 +12,7 @@ import {
   orderBy,
   query,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import {
@@ -93,10 +94,28 @@ export function useGetDocumentsHook(
   }, []);
 
   const useGetDocuments = useCallback(
-    async (failCb?: () => any) => {
+    async (
+      title: string,
+      category: number,
+      degreeOfUnderstanding: number,
+      bookmark: string,
+      failCb?: () => any,
+    ) => {
       try {
         dispatch(handleSetIsLoading({ isLoading: true }));
-        const querySnapshot = await getDocs(query(collection(db, type), order));
+        const conditions = [];
+
+        if (title) conditions.push(where('title', '==', title));
+        if (category === 0) conditions.push(where('category', '==', category));
+        if (degreeOfUnderstanding !== -1)
+          conditions.push(
+            where('degreeOfUnderstanding', '==', degreeOfUnderstanding),
+          );
+        if (bookmark) conditions.push(where('bookmark', '==', bookmark));
+
+        const querySnapshot = await getDocs(
+          query(collection(db, type), ...conditions, order),
+        );
         setDocuments(
           querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
         );

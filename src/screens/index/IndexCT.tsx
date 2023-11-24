@@ -10,6 +10,7 @@ import {
   useDeleteDocumentHook,
   useSetIsActivePopupHook,
   useUpdateDocumentHook,
+  useChangeHook,
 } from 'modules/customHooks';
 import { TypeKeyValueForm } from 'modules/types';
 import IndexPT from './IndexPT';
@@ -45,6 +46,13 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const { isActivePopup, selectedId, xPos, yPos, useClickComponent } =
     useSetIsActivePopupHook();
 
+  const { form, useChange } = useChangeHook({
+    title: '',
+    category: 0,
+    degreeOfUnderstanding: -1,
+    bookmark: '',
+  });
+
   const handleClickCard = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     type?: string,
@@ -61,7 +69,12 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   ) => {
     useSetConfirmPopup('Really Add Document?', () => {
       useAddDocument(COLLECTION_NAME, { ...form, createDt: new Date() }, () => {
-        useGetLinks();
+        useGetLinks(
+          form.title as string,
+          form.category as number,
+          form.degreeOfUnderstanding as number,
+          form.bookmark as string,
+        );
         useClickComponent(e);
       });
     });
@@ -79,7 +92,12 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
         id,
         { ...form, updateDt: new Date() },
         () => {
-          useGetLinks();
+          useGetLinks(
+            form.title as string,
+            form.category as number,
+            form.degreeOfUnderstanding as number,
+            form.bookmark as string,
+          );
           useClickComponent(e);
         },
       );
@@ -92,7 +110,14 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   ) => {
     e.stopPropagation();
     useSetConfirmPopup('Really Delete Document?', () => {
-      useDeleteDocument(COLLECTION_NAME, id, () => useGetLinks());
+      useDeleteDocument(COLLECTION_NAME, id, () =>
+        useGetLinks(
+          form.title as string,
+          form.category as number,
+          form.degreeOfUnderstanding as number,
+          form.bookmark as string,
+        ),
+      );
     });
   };
 
@@ -112,6 +137,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     <IndexPT
       isSignIn={isSignIn}
       popupType={popupType}
+      form={form}
       links={links}
       categories={categories}
       degreeOfUnderstandings={degreeOfUnderstandings}
@@ -126,6 +152,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
       onUpdateDocument={handleUpdateDocument}
       onDeleteDocument={handleDeleteDocument}
       onClickCard={handleClickCard}
+      onChange={useChange}
     />
   );
 }
