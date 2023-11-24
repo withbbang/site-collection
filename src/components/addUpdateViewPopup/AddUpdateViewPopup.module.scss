@@ -24,7 +24,7 @@
   justify-content: space-evenly;
   align-items: center;
   width: 30%;
-  height: 40%;
+  min-height: 40%;
   padding: 20px;
   text-align: center;
   border-radius: 10px;
@@ -37,6 +37,10 @@
     flex: 1;
     align-items: center;
     box-sizing: border-box;
+
+    &:not(:last-of-type) {
+      margin-bottom: 10px;
+    }
 
     > label {
       width: 100%;
@@ -56,8 +60,8 @@
 
       > textarea {
         display: flex;
-        max-height: 40%;
-        flex: 1;
+        height: 40%;
+        overflow-y: hidden;
       }
     }
   }
@@ -71,7 +75,8 @@
 
     > button {
       width: 45%;
-      height: 70%;
+      padding: 3% 0;
+      align-self: center;
       box-sizing: border-box;
       color: $most-dark;
       font-weight: bold;
@@ -114,14 +119,14 @@
 @include tablit {
   .modalBody {
     width: 40%;
-    height: 50%;
+    min-height: 50%;
   }
 }
 
 @include mobile {
   .modalBody {
     width: 70%;
-    height: 50%;
+    min-height: 50%;
   }
 }
 

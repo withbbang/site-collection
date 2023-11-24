@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   TypeCategory,
   TypeDegreeOfUnderstanding,
@@ -20,9 +20,12 @@ function AddUpdateViewPopup({
   onAddDocument,
   onUpdateDocument,
 }: TypeAddUpdateViewPopup): React.JSX.Element {
-  const ref = React.useRef(
+  const divRef = React.useRef(
     null,
   ) as React.MutableRefObject<HTMLDivElement | null>;
+  const textAreaRef = React.useRef(
+    null,
+  ) as React.MutableRefObject<HTMLTextAreaElement | null>;
 
   const { form, setForm, useChange } = useChangeHook({
     title: '',
@@ -69,22 +72,29 @@ function AddUpdateViewPopup({
     }
   }, [isActive, link]);
 
+  useEffect(() => {
+    if (textAreaRef.current) {
+      textAreaRef.current.style.height = 'auto';
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+    }
+  }, [form.description]);
+
   // 팝업 활성
   const handleActivePopup = () => {
     document.body.style.position = 'fixed';
 
-    if (ref.current) {
-      ref.current.style.transition = 'none';
-      ref.current.style.left = `${xPos}px`;
-      ref.current.style.top = `${yPos}px`;
+    if (divRef.current) {
+      divRef.current.style.transition = 'none';
+      divRef.current.style.left = `${xPos}px`;
+      divRef.current.style.top = `${yPos}px`;
     }
 
     setTimeout(() => {
-      if (ref.current) {
-        ref.current.style.transition = 'all 0.5s';
-        ref.current.style.top = '50%';
-        ref.current.style.left = '50%';
-        ref.current.style.transform = 'translate(-50%, -50%) scale(1)';
+      if (divRef.current) {
+        divRef.current.style.transition = 'all 0.5s';
+        divRef.current.style.top = '50%';
+        divRef.current.style.left = '50%';
+        divRef.current.style.transform = 'translate(-50%, -50%) scale(1)';
       }
     }, 0);
   };
@@ -93,10 +103,10 @@ function AddUpdateViewPopup({
   const handleInActivePopup = () => {
     document.body.style.position = 'unset';
 
-    if (ref.current) {
-      ref.current.style.top = `${yPos}px`;
-      ref.current.style.left = `${xPos}px`;
-      ref.current.style.transform = 'translate(-50%, -50%) scale(0)';
+    if (divRef.current) {
+      divRef.current.style.top = `${yPos}px`;
+      divRef.current.style.left = `${xPos}px`;
+      divRef.current.style.transform = 'translate(-50%, -50%) scale(0)';
     }
   };
 
@@ -116,7 +126,7 @@ function AddUpdateViewPopup({
             ? [styles.modalBody, styles.viewMode].join(' ')
             : styles.modalBody
         }
-        ref={ref}
+        ref={divRef}
       >
         <div className={styles.content}>
           <label htmlFor="title">
@@ -192,6 +202,7 @@ function AddUpdateViewPopup({
             <br />
             <textarea
               name="description"
+              ref={textAreaRef}
               value={form.description}
               onChange={useChange}
               disabled={popupType === 'view'}
