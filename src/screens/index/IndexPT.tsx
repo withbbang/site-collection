@@ -56,6 +56,7 @@ function IndexPT({
           )}
         </div>
         <h1>Site Link Collection</h1>
+        <div className={styles.conditionDiv}></div>
         <div className={styles.innerWrap}>
           {isSignIn && (
             <Card isSignIn={isSignIn} id="0" onClickCard={onClickCard} />

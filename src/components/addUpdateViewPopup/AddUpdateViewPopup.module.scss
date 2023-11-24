@@ -36,6 +36,7 @@
     display: flex;
     flex: 1;
     align-items: center;
+    box-sizing: border-box;
 
     > label {
       width: 100%;
@@ -44,7 +45,8 @@
 
       > input,
       select,
-      textarea {
+      textarea,
+      a {
         width: 100%;
         padding: 5px;
         font-size: 0.8rem;
@@ -86,6 +88,26 @@
   }
 
   &.viewMode {
+    > div {
+      > label {
+        > input,
+        select,
+        textarea {
+          &:disabled {
+            border: none;
+            color: $more-dark;
+            font-size: 0.9rem;
+            background-color: $more-light;
+            appearance: none;
+          }
+        }
+
+        > a {
+          color: $more-dark;
+          font-size: 0.9rem;
+        }
+      }
+    }
   }
 }
 

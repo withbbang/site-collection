@@ -127,6 +127,7 @@ function AddUpdateViewPopup({
               name="title"
               value={form.title}
               onChange={useChange}
+              disabled={popupType === 'view'}
             />
           </label>
         </div>
@@ -134,7 +135,20 @@ function AddUpdateViewPopup({
           <label htmlFor="url">
             URL
             <br />
-            <input id="url" name="url" value={form.url} onChange={useChange} />
+            {popupType === 'view' ? (
+              <a href={form.url as string} target="_blank" rel="noreferrer">
+                {form.url}
+              </a>
+            ) : (
+              <input
+                className={styles.url}
+                id="url"
+                name="url"
+                value={form.url}
+                onChange={useChange}
+                disabled={popupType === 'view'}
+              />
+            )}
           </label>
         </div>
         <div className={styles.contents}>
@@ -146,6 +160,7 @@ function AddUpdateViewPopup({
               name="category"
               value={form.category}
               onChange={useChange}
+              disabled={popupType === 'view'}
             >
               {Array.isArray(categories) &&
                 categories.length > 0 &&
@@ -164,6 +179,7 @@ function AddUpdateViewPopup({
               name="bookmark"
               value={form.bookmark}
               onChange={useChange}
+              disabled={popupType === 'view'}
             >
               <option value="N">N</option>
               <option value="Y">Y</option>
@@ -178,6 +194,7 @@ function AddUpdateViewPopup({
               name="description"
               value={form.description}
               onChange={useChange}
+              disabled={popupType === 'view'}
             />
           </label>
         </div>
@@ -190,6 +207,7 @@ function AddUpdateViewPopup({
               name="degreeOfUnderstanding"
               value={form.degreeOfUnderstanding}
               onChange={useChange}
+              disabled={popupType === 'view'}
             >
               DegreeOfUnderstanding
               {Array.isArray(degreeOfUnderstandings) &&
