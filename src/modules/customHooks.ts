@@ -65,17 +65,14 @@ export function useSetCatchClauseHook() {
  */
 export function useGetDocumentsHook(
   type: string,
-  columnNmForOrder?: string,
-  directionForOrder?: OrderByDirection,
+  columnNmForOrder: string = 'createDt',
+  directionForOrder: OrderByDirection = 'desc',
   failCb?: () => any,
 ) {
   const dispatch = useDispatch();
   const useSetCatchClause = useSetCatchClauseHook();
   const [documents, setDocuments] = useState<any[]>([]);
-  const order = orderBy(
-    columnNmForOrder !== undefined ? columnNmForOrder : 'createDt',
-    directionForOrder !== undefined ? directionForOrder : 'desc',
-  );
+  const order = orderBy(columnNmForOrder, directionForOrder);
   const q = query(collection(db, type), order);
 
   useEffect(() => {
@@ -313,9 +310,12 @@ export function useChangeHook(keyValueForm: TypeKeyValueForm) {
     ) => {
       const { name, value } = e.target;
 
-      setForm((prevState) => ({ ...prevState, [name]: value.trim() }));
+      setForm((prevState) => ({
+        ...prevState,
+        [name]: e.target.tagName === 'TEXTAREA' ? value : value.trim(),
+      }));
     },
-    [form, keyValueForm],
+    [setForm],
   );
 
   return { form, setForm, useChange };
