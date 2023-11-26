@@ -42,6 +42,7 @@ export function useSetCatchClauseHook() {
   const dispatch = useDispatch();
 
   const useSetCatchClause = useCallback((error: any, cb?: () => any) => {
+    console.error(error);
     dispatch(handleSetMessage({ message: error.message }));
     dispatch(handleSetIsErrorPopupActive({ isErrorPopupActive: true }));
     dispatch(
@@ -103,10 +104,13 @@ export function useGetDocumentsHook(
     ) => {
       try {
         dispatch(handleSetIsLoading({ isLoading: true }));
+        alert(
+          `title: ${title}, category: ${category}, degreeOfUnderstanding: ${degreeOfUnderstanding}, bookmark: ${bookmark}`,
+        );
         const conditions = [];
 
         if (title) conditions.push(where('title', '==', title));
-        if (category === 0) conditions.push(where('category', '==', category));
+        if (category !== 0) conditions.push(where('category', '==', category));
         if (degreeOfUnderstanding !== -1)
           conditions.push(
             where('degreeOfUnderstanding', '==', degreeOfUnderstanding),

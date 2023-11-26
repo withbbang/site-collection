@@ -53,6 +53,15 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
     bookmark: '',
   });
 
+  const handleSearch = () => {
+    useGetLinks(
+      form.title as string,
+      form.category as number,
+      form.degreeOfUnderstanding as number,
+      form.bookmark as string,
+    );
+  };
+
   const handleClickCard = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     type?: string,
@@ -153,6 +162,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
       onDeleteDocument={handleDeleteDocument}
       onClickCard={handleClickCard}
       onChange={useChange}
+      onSearch={handleSearch}
     />
   );
 }

@@ -28,6 +28,7 @@ function IndexPT({
   onDeleteDocument,
   onClickCard,
   onChange,
+  onSearch,
 }: typeIndexPT): React.JSX.Element {
   return (
     <>
@@ -112,7 +113,7 @@ function IndexPT({
               <option value="Y">Y</option>
             </select>
           </label>
-          <button>Search</button>
+          <button onClick={onSearch}>Search</button>
         </div>
         <div className={styles.innerWrap}>
           {isSignIn && (
@@ -190,6 +191,7 @@ interface typeIndexPT {
       | React.ChangeEvent<HTMLTextAreaElement>
       | React.ChangeEvent<HTMLSelectElement>,
   ) => void;
+  onSearch: () => void;
 }
 
 IndexPT.defaultProps = {
