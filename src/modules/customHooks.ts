@@ -104,9 +104,6 @@ export function useGetDocumentsHook(
     ) => {
       try {
         dispatch(handleSetIsLoading({ isLoading: true }));
-        alert(
-          `title: ${title}, category: ${category}, degreeOfUnderstanding: ${degreeOfUnderstanding}, bookmark: ${bookmark}`,
-        );
         const conditions = [];
 
         if (title) conditions.push(where('title', '==', title));

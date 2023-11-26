@@ -61,6 +61,7 @@ function IndexPT({
         <h1>Site Link Collection</h1>
         <div className={styles.conditionDiv}>
           <label htmlFor="title">
+            Title
             <input
               id="title"
               name="title"
@@ -69,6 +70,7 @@ function IndexPT({
             />
           </label>
           <label htmlFor="category">
+            Category
             <select
               id="category"
               name="category"
@@ -85,6 +87,7 @@ function IndexPT({
             </select>
           </label>
           <label htmlFor="degreeOfUnderstanding">
+            Degree
             <select
               id="degreeOfUnderstanding"
               name="degreeOfUnderstanding"
@@ -102,6 +105,7 @@ function IndexPT({
             </select>
           </label>
           <label htmlFor="bookmark">
+            Bookmark
             <select
               id="bookmark"
               name="bookmark"

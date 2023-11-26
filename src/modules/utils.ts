@@ -133,7 +133,7 @@ export function handleRetrunCorrespondingDescription(
 }
 
 /**
- * 단일 데이터 유효성 검사 하는 함수
+ * 단일 데이터 공통 유효성 검사 하는 함수
  * @param {any} data 유효성 검사할 값
  * @returns {boolean} 유효성 검사 성공: true / 유효성 검사 실패: false
  */
