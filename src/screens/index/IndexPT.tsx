@@ -63,7 +63,7 @@ function IndexPT({
           className={
             isSignIn
               ? styles.conditionDiv
-              : [styles.conditionDiv, styles.signInCondition].join(' ')
+              : [styles.conditionDiv, styles.signOutCondition].join(' ')
           }
         >
           <label htmlFor="title">
