@@ -1,5 +1,7 @@
 # Usable Site Link Collection
 
+[Homepage](http://site-link-collection.o-r.kr/)
+
 ### 프로젝트 목적
 
 1. 유용한 사이트 링크 모음 프로젝트
@@ -63,3 +65,8 @@ Service Diagrams
 ```
 
 ---
+
+### 주요 학습 내용
+
+- 커스텀 훅을 이용한 코드 재활용 및 추상화
+- useCallback 사용으로 최적화
