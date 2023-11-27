@@ -59,7 +59,13 @@ function IndexPT({
           )}
         </div>
         <h1>Site Link Collection</h1>
-        <div className={styles.conditionDiv}>
+        <div
+          className={
+            isSignIn
+              ? styles.conditionDiv
+              : [styles.conditionDiv, styles.signInCondition].join(' ')
+          }
+        >
           <label htmlFor="title">
             Title
             <input
@@ -86,37 +92,41 @@ function IndexPT({
                 ))}
             </select>
           </label>
-          <label htmlFor="degreeOfUnderstanding">
-            Degree
-            <select
-              id="degreeOfUnderstanding"
-              name="degreeOfUnderstanding"
-              value={form.degreeOfUnderstanding}
-              onChange={onChange}
-            >
-              <option value="">All</option>
-              {Array.isArray(degreeOfUnderstandings) &&
-                degreeOfUnderstandings.length > 0 &&
-                degreeOfUnderstandings.map(({ id, grade, description }) => (
-                  <option key={id} value={+grade}>
-                    {description}
-                  </option>
-                ))}
-            </select>
-          </label>
-          <label htmlFor="bookmark">
-            Bookmark
-            <select
-              id="bookmark"
-              name="bookmark"
-              value={form.bookmark}
-              onChange={onChange}
-            >
-              <option value="">All</option>
-              <option value="N">N</option>
-              <option value="Y">Y</option>
-            </select>
-          </label>
+          {isSignIn && (
+            <>
+              <label htmlFor="degreeOfUnderstanding">
+                Degree
+                <select
+                  id="degreeOfUnderstanding"
+                  name="degreeOfUnderstanding"
+                  value={form.degreeOfUnderstanding}
+                  onChange={onChange}
+                >
+                  <option value="">All</option>
+                  {Array.isArray(degreeOfUnderstandings) &&
+                    degreeOfUnderstandings.length > 0 &&
+                    degreeOfUnderstandings.map(({ id, grade, description }) => (
+                      <option key={id} value={+grade}>
+                        {description}
+                      </option>
+                    ))}
+                </select>
+              </label>
+              <label htmlFor="bookmark">
+                Bookmark
+                <select
+                  id="bookmark"
+                  name="bookmark"
+                  value={form.bookmark}
+                  onChange={onChange}
+                >
+                  <option value="">All</option>
+                  <option value="N">N</option>
+                  <option value="Y">Y</option>
+                </select>
+              </label>
+            </>
+          )}
           <button onClick={onSearch}>Search</button>
         </div>
         <div className={styles.innerWrap}>
