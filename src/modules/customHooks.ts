@@ -62,6 +62,8 @@ export function useSetCatchClauseHook() {
 /**
  * firebase documents 가져오기 커스텀 훅
  * @param {string} type firebase document attribute name
+ * @param {string} columnNmForOrder 정렬할 컬럼 이름
+ * @param {string} directionForOrder 정렬 방향
  * @param {function | undefined} failCb 에러팝업에 넘길 콜백
  * @returns
  */
@@ -79,7 +81,6 @@ export function useGetDocumentsHook(
 
   useEffect(() => {
     (async () => {
-      console.log(`${type} ${columnNmForOrder} ${directionForOrder}`);
       try {
         dispatch(handleSetIsLoading({ isLoading: true }));
         const querySnapshot = await getDocs(q);
