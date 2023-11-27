@@ -329,11 +329,11 @@ export function useChangeHook(keyValueForm: TypeKeyValueForm) {
         | React.ChangeEvent<HTMLTextAreaElement>
         | React.ChangeEvent<HTMLSelectElement>,
     ) => {
-      const { name, value } = e.target;
+      const { name, value } = e.currentTarget;
 
       setForm((prevState) => ({
         ...prevState,
-        [name]: e.target.tagName === 'TEXTAREA' ? value : value.trim(),
+        [name]: e.currentTarget.tagName === 'TEXTAREA' ? value : value.trim(),
       }));
     },
     [setForm],
