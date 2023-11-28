@@ -98,10 +98,10 @@ export function useGetDocumentsHook(
 
   const useGetDocuments = useCallback(
     async (
-      title: string,
-      category: number,
-      degreeOfUnderstanding: number,
-      bookmark: string,
+      title: string = '',
+      category: number = 0,
+      degreeOfUnderstanding: number = -1,
+      bookmark: string = '',
       failCb?: () => any,
     ) => {
       try {

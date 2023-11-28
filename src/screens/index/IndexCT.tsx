@@ -46,7 +46,7 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const { isActivePopup, selectedId, xPos, yPos, useClickComponent } =
     useSetIsActivePopupHook();
 
-  const { form, useChange } = useChangeHook({
+  const { form, setForm, useChange } = useChangeHook({
     title: '',
     category: 0,
     degreeOfUnderstanding: -1,
@@ -78,12 +78,13 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   ) => {
     useSetConfirmPopup('Really Add Document?', () => {
       useAddDocument(COLLECTION_NAME, { ...form, createDt: new Date() }, () => {
-        useGetLinks(
-          form.title as string,
-          form.category as number,
-          form.degreeOfUnderstanding as number,
-          form.bookmark as string,
-        );
+        setForm({
+          title: '',
+          category: 0,
+          degreeOfUnderstanding: -1,
+          bookmark: '',
+        });
+        useGetLinks();
         useClickComponent(e);
       });
     });
@@ -101,12 +102,13 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
         id,
         { ...form, updateDt: new Date() },
         () => {
-          useGetLinks(
-            form.title as string,
-            form.category as number,
-            form.degreeOfUnderstanding as number,
-            form.bookmark as string,
-          );
+          setForm({
+            title: '',
+            category: 0,
+            degreeOfUnderstanding: -1,
+            bookmark: '',
+          });
+          useGetLinks();
           useClickComponent(e);
         },
       );
@@ -119,14 +121,15 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   ) => {
     e.stopPropagation();
     useSetConfirmPopup('Really Delete Document?', () => {
-      useDeleteDocument(COLLECTION_NAME, id, () =>
-        useGetLinks(
-          form.title as string,
-          form.category as number,
-          form.degreeOfUnderstanding as number,
-          form.bookmark as string,
-        ),
-      );
+      useDeleteDocument(COLLECTION_NAME, id, () => {
+        setForm({
+          title: '',
+          category: 0,
+          degreeOfUnderstanding: -1,
+          bookmark: '',
+        });
+        useGetLinks();
+      });
     });
   };
 
