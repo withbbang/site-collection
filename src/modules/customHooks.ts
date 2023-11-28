@@ -30,6 +30,7 @@ import {
   handleSignInWithEmailAndPassword,
   handleEncryptValue,
   handleCheckValidForm,
+  handleTrimData,
 } from './utils';
 import { auth, db } from './configs';
 import { TypeKeyValueForm } from './types';
@@ -200,10 +201,12 @@ export function useAddDocumentHook(failCb?: () => any) {
   const useAddDocument = useCallback(
     async (type: string, params: any, successCb?: () => any) => {
       try {
-        handleCheckValidForm(params);
+        const parameters = handleTrimData(params);
+
+        handleCheckValidForm(parameters);
 
         dispatch(handleSetIsLoading({ isLoading: true }));
-        const { id } = await addDoc(collection(db, type), params);
+        const { id } = await addDoc(collection(db, type), parameters);
         successCb?.();
       } catch (error: any) {
         useSetCatchClause(error, failCb);
@@ -229,10 +232,12 @@ export function useUpdateDocumentHook(failCb?: () => any) {
   const useUpdateDocument = useCallback(
     async (type: string, id: string, params: any, successCb?: () => any) => {
       try {
-        handleCheckValidForm(params);
+        const parameters = handleTrimData(params);
+
+        handleCheckValidForm(parameters);
 
         dispatch(handleSetIsLoading({ isLoading: true }));
-        await updateDoc(doc(db, type, id), params);
+        await updateDoc(doc(db, type, id), parameters);
         successCb?.();
       } catch (error: any) {
         useSetCatchClause(error, failCb);
@@ -333,7 +338,7 @@ export function useChangeHook(keyValueForm: TypeKeyValueForm) {
 
       setForm((prevState) => ({
         ...prevState,
-        [name]: e.currentTarget.tagName === 'TEXTAREA' ? value : value.trim(),
+        [name]: value,
       }));
     },
     [setForm],

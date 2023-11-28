@@ -164,3 +164,19 @@ export function handleCheckValidForm(data: TypeKeyValueForm) {
       `Empty ${handleSetUpperCaseFirstCharacter(keysArray[index])} Field`,
     );
 }
+
+/**
+ * 객체 내 값 중 문자열 trim해서 반환해주는 함수
+ * @param {any} params 변환될 객체
+ * @returns {TypeKeyValueForm} 변환된 객체
+ */
+export function handleTrimData(params: any): TypeKeyValueForm {
+  const parameters: TypeKeyValueForm = {};
+
+  Object.entries(params).forEach(([key, value]) => {
+    const val = value as string | number;
+    parameters[key] = typeof val === 'string' ? val.trim() : val;
+  });
+
+  return parameters;
+}
