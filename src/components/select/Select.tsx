@@ -12,6 +12,7 @@ function Select({ id, name, value, onChange, disabled, contents }: TypeSelect) {
     <label className={styles.label} htmlFor={id}>
       {handleSetUpperCaseFirstCharacter(id)}
       <select
+        size={1}
         className={styles.select}
         id={id}
         name={name}

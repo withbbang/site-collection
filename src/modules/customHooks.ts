@@ -334,14 +334,11 @@ export function useChangeHook(keyValueForm: TypeKeyValueForm) {
         | React.ChangeEvent<HTMLTextAreaElement>
         | React.ChangeEvent<HTMLSelectElement>,
     ) => {
-      const { name, value } = e.currentTarget;
+      const { name, value, tagName } = e.currentTarget;
 
       setForm((prevState) => ({
         ...prevState,
-        [name]:
-          name === 'category' || name === 'degreeOfUnderstanding'
-            ? +value
-            : value,
+        [name]: tagName === 'SELECT' && !Number.isNaN(+value) ? +value : value,
       }));
     },
     [setForm],

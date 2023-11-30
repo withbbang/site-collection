@@ -1,3 +1,2 @@
 [TODO]
-1. useChange에서 category, degreeOfUnderstanding에 대해서만 number 값으로 설정하는데, 코드 간결하게 만들기
-2. 모바일버전 select 태그에 option들 위치 및 크기 재설정 필요
+- 모바일버전 select 태그에 option들 위치 및 크기 재설정 필요
