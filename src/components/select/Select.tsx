@@ -7,7 +7,7 @@ function Option({ value, description }: any) {
   return <option value={value}>{description}</option>;
 }
 
-function Select({ id, name, value, onChange, disabled, contents, css }: any) {
+function Select({ id, name, value, onChange, disabled, contents }: any) {
   return (
     <label className={styles.label} htmlFor={id}>
       {handleSetUpperCaseFirstCharacter(id)}
@@ -18,7 +18,6 @@ function Select({ id, name, value, onChange, disabled, contents, css }: any) {
         value={value}
         onChange={onChange}
         disabled={disabled}
-        style={css}
       >
         {Array.isArray(contents) &&
           contents.length > 0 &&

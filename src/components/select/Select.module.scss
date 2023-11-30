@@ -8,12 +8,13 @@
     font-size: 0.8rem;
     resize: none;
     box-sizing: border-box;
-  }
-}
 
-@include mobile {
-  .mobileLabel {
-    width: 45% !important;
-    margin-bottom: 10px;
+    &:disabled {
+      border: none;
+      color: $more-dark;
+      font-size: 0.9rem;
+      background-color: $more-light;
+      appearance: none;
+    }
   }
 }

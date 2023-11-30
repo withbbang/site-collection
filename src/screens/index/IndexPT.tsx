@@ -83,7 +83,7 @@ function IndexPT({
             onChange={onChange}
             contents={categories.map(({ id, category, description }) => ({
               id,
-              value: +category,
+              value: category,
               description,
             }))}
           />
@@ -99,12 +99,11 @@ function IndexPT({
                   ...degreeOfUnderstandings.map(
                     ({ id, grade, description }) => ({
                       id,
-                      value: +grade,
+                      value: grade,
                       description,
                     }),
                   ),
                 ]}
-                css={{ width: '100%' }}
               />
               <Select
                 id="bookmark"
@@ -117,7 +116,6 @@ function IndexPT({
                   { id: 'N', value: 'N', description: 'N' },
                   { id: 'Y', value: 'Y', description: 'Y' },
                 ]}
-                css={{ width: '100%' }}
               />
             </>
           )}

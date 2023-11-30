@@ -171,10 +171,9 @@ function AddUpdateViewPopup({
             disabled={popupType === 'view'}
             contents={categories.map(({ id, category, description }) => ({
               id,
-              value: +category,
+              value: category,
               description,
             }))}
-            css={{ width: '100%' }}
           />
           <Select
             id="bookmark"
@@ -186,7 +185,6 @@ function AddUpdateViewPopup({
               { id: 'N', value: 'N', description: 'N' },
               { id: 'Y', value: 'Y', description: 'Y' },
             ]}
-            css={{ width: '100%' }}
           />
         </div>
         <div className={styles.content}>
@@ -212,11 +210,10 @@ function AddUpdateViewPopup({
             contents={degreeOfUnderstandings.map(
               ({ id, grade, description }) => ({
                 id,
-                value: +grade,
+                value: grade,
                 description,
               }),
             )}
-            css={{ width: '100%' }}
           />
           <button
             onClick={(e) => {

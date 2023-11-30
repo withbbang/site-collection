@@ -1,3 +1,4 @@
 [TODO]
-1. add, update할 때 category, degreeOfUnderstanding값 number 형태로 들어가도록 할 것
+1. useChange에서 category, degreeOfUnderstanding에 대해서만 number 값으로 설정하는데, 코드 간결하게 만들기
 2. 모바일버전 select 태그에 option들 위치 및 크기 재설정 필요
+3. select 컴포넌트 props 타입 지정

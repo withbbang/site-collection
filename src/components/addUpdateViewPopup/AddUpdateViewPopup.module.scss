@@ -48,7 +48,6 @@
       font-size: 0.9rem;
 
       > input,
-      select,
       textarea,
       a {
         width: 100%;
@@ -100,7 +99,6 @@
     > div {
       > label {
         > input,
-        select,
         textarea {
           &:disabled {
             border: none;

@@ -338,7 +338,10 @@ export function useChangeHook(keyValueForm: TypeKeyValueForm) {
 
       setForm((prevState) => ({
         ...prevState,
-        [name]: value,
+        [name]:
+          name === 'category' || name === 'degreeOfUnderstanding'
+            ? +value
+            : value,
       }));
     },
     [setForm],

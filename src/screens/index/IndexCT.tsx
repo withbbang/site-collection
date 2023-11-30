@@ -56,8 +56,8 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   const handleSearch = () => {
     useGetLinks(
       form.title as string,
-      +form.category as number,
-      +form.degreeOfUnderstanding as number,
+      form.category as number,
+      form.degreeOfUnderstanding as number,
       form.bookmark as string,
     );
   };
