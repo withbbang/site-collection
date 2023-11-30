@@ -1,2 +1,3 @@
 [TODO]
-1. 
+1. add, update할 때 category, degreeOfUnderstanding값 number 형태로 들어가도록 할 것
+2. 모바일버전 select 태그에 option들 위치 및 크기 재설정 필요
