@@ -7,6 +7,7 @@ import {
   TypeLink,
 } from 'modules/types';
 import AddUpdateViewPopup from 'components/addUpdateViewPopup/AddUpdateViewPopup';
+import Select from 'components/select/Select';
 import styles from './Index.module.scss';
 
 function IndexPT({
@@ -75,56 +76,49 @@ function IndexPT({
               onChange={onChange}
             />
           </label>
-          <label htmlFor="category">
-            Category
-            <select
-              id="category"
-              name="category"
-              value={form.category}
-              onChange={onChange}
-            >
-              {Array.isArray(categories) &&
-                categories.length > 0 &&
-                categories.map(({ id, category, description }) => (
-                  <option key={id} value={+category}>
-                    {description}
-                  </option>
-                ))}
-            </select>
-          </label>
+          <Select
+            id="category"
+            name="category"
+            value={form.category}
+            onChange={onChange}
+            contents={categories.map(({ id, category, description }) => ({
+              id,
+              value: +category,
+              description,
+            }))}
+          />
           {isSignIn && (
             <>
-              <label htmlFor="degreeOfUnderstanding">
-                Degree
-                <select
-                  id="degreeOfUnderstanding"
-                  name="degreeOfUnderstanding"
-                  value={form.degreeOfUnderstanding}
-                  onChange={onChange}
-                >
-                  <option value="">All</option>
-                  {Array.isArray(degreeOfUnderstandings) &&
-                    degreeOfUnderstandings.length > 0 &&
-                    degreeOfUnderstandings.map(({ id, grade, description }) => (
-                      <option key={id} value={+grade}>
-                        {description}
-                      </option>
-                    ))}
-                </select>
-              </label>
-              <label htmlFor="bookmark">
-                Bookmark
-                <select
-                  id="bookmark"
-                  name="bookmark"
-                  value={form.bookmark}
-                  onChange={onChange}
-                >
-                  <option value="">All</option>
-                  <option value="N">N</option>
-                  <option value="Y">Y</option>
-                </select>
-              </label>
+              <Select
+                id="degree"
+                name="degreeOfUnderstanding"
+                value={form.degreeOfUnderstanding}
+                onChange={onChange}
+                contents={[
+                  { id: 'All', value: -1, description: 'All' },
+                  ...degreeOfUnderstandings.map(
+                    ({ id, grade, description }) => ({
+                      id,
+                      value: +grade,
+                      description,
+                    }),
+                  ),
+                ]}
+                css={{ width: '100%' }}
+              />
+              <Select
+                id="bookmark"
+                name="bookmark"
+                value={form.bookmark}
+                onChange={onChange}
+                disabled={popupType === 'view'}
+                contents={[
+                  { id: 'All', value: '', description: 'All' },
+                  { id: 'N', value: 'N', description: 'N' },
+                  { id: 'Y', value: 'Y', description: 'Y' },
+                ]}
+                css={{ width: '100%' }}
+              />
             </>
           )}
           <button onClick={onSearch}>Search</button>

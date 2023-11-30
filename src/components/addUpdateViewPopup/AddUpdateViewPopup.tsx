@@ -6,6 +6,7 @@ import {
   TypeLink,
 } from 'modules/types';
 import { useChangeHook } from 'modules/customHooks';
+import Select from 'components/select/Select';
 import styles from './AddUpdateViewPopup.module.scss';
 
 function AddUpdateViewPopup({
@@ -162,39 +163,31 @@ function AddUpdateViewPopup({
           </label>
         </div>
         <div className={styles.contents}>
-          <label htmlFor="category">
-            Category
-            <br />
-            <select
-              id="category"
-              name="category"
-              value={form.category}
-              onChange={useChange}
-              disabled={popupType === 'view'}
-            >
-              {Array.isArray(categories) &&
-                categories.length > 0 &&
-                categories.map(({ id, category, description }) => (
-                  <option key={id} value={+category}>
-                    {description}
-                  </option>
-                ))}
-            </select>
-          </label>
-          <label htmlFor="bookmark">
-            Bookmark
-            <br />
-            <select
-              id="bookmark"
-              name="bookmark"
-              value={form.bookmark}
-              onChange={useChange}
-              disabled={popupType === 'view'}
-            >
-              <option value="N">N</option>
-              <option value="Y">Y</option>
-            </select>
-          </label>
+          <Select
+            id="category"
+            name="category"
+            value={form.category}
+            onChange={useChange}
+            disabled={popupType === 'view'}
+            contents={categories.map(({ id, category, description }) => ({
+              id,
+              value: +category,
+              description,
+            }))}
+            css={{ width: '100%' }}
+          />
+          <Select
+            id="bookmark"
+            name="bookmark"
+            value={form.bookmark}
+            onChange={useChange}
+            disabled={popupType === 'view'}
+            contents={[
+              { id: 'N', value: 'N', description: 'N' },
+              { id: 'Y', value: 'Y', description: 'Y' },
+            ]}
+            css={{ width: '100%' }}
+          />
         </div>
         <div className={styles.content}>
           <label htmlFor="description">
@@ -210,26 +203,21 @@ function AddUpdateViewPopup({
           </label>
         </div>
         <div className={styles.contents}>
-          <label htmlFor="degreeOfUnderstanding">
-            Degree
-            <br />
-            <select
-              id="degreeOfUnderstanding"
-              name="degreeOfUnderstanding"
-              value={form.degreeOfUnderstanding}
-              onChange={useChange}
-              disabled={popupType === 'view'}
-            >
-              DegreeOfUnderstanding
-              {Array.isArray(degreeOfUnderstandings) &&
-                degreeOfUnderstandings.length > 0 &&
-                degreeOfUnderstandings.map(({ id, grade, description }) => (
-                  <option key={id} value={+grade}>
-                    {description}
-                  </option>
-                ))}
-            </select>
-          </label>
+          <Select
+            id="degree"
+            name="degreeOfUnderstanding"
+            value={form.degreeOfUnderstanding}
+            onChange={useChange}
+            disabled={popupType === 'view'}
+            contents={degreeOfUnderstandings.map(
+              ({ id, grade, description }) => ({
+                id,
+                value: +grade,
+                description,
+              }),
+            )}
+            css={{ width: '100%' }}
+          />
           <button
             onClick={(e) => {
               if (popupType === 'Add') onAddDocument(e, form);
