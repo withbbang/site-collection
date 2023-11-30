@@ -30,7 +30,7 @@ function IndexPT({
   onClickCard,
   onChange,
   onSearch,
-}: typeIndexPT): React.JSX.Element {
+}: TypeIndexPT): React.JSX.Element {
   return (
     <>
       <AddUpdateViewPopup
@@ -81,8 +81,7 @@ function IndexPT({
             name="category"
             value={form.category}
             onChange={onChange}
-            contents={categories.map(({ id, category, description }) => ({
-              id,
+            contents={categories.map(({ category, description }) => ({
               value: category,
               description,
             }))}
@@ -95,14 +94,11 @@ function IndexPT({
                 value={form.degreeOfUnderstanding}
                 onChange={onChange}
                 contents={[
-                  { id: 'All', value: -1, description: 'All' },
-                  ...degreeOfUnderstandings.map(
-                    ({ id, grade, description }) => ({
-                      id,
-                      value: grade,
-                      description,
-                    }),
-                  ),
+                  { value: -1, description: 'All' },
+                  ...degreeOfUnderstandings.map(({ grade, description }) => ({
+                    value: grade,
+                    description,
+                  })),
                 ]}
               />
               <Select
@@ -112,9 +108,9 @@ function IndexPT({
                 onChange={onChange}
                 disabled={popupType === 'view'}
                 contents={[
-                  { id: 'All', value: '', description: 'All' },
-                  { id: 'N', value: 'N', description: 'N' },
-                  { id: 'Y', value: 'Y', description: 'Y' },
+                  { value: '', description: 'All' },
+                  { value: 'N', description: 'N' },
+                  { value: 'Y', description: 'Y' },
                 ]}
               />
             </>
@@ -158,7 +154,7 @@ function IndexPT({
   );
 }
 
-interface typeIndexPT {
+interface TypeIndexPT {
   isSignIn: boolean;
   popupType?: string;
   form: TypeKeyValueForm;

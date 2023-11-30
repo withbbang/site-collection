@@ -169,8 +169,7 @@ function AddUpdateViewPopup({
             value={form.category}
             onChange={useChange}
             disabled={popupType === 'view'}
-            contents={categories.map(({ id, category, description }) => ({
-              id,
+            contents={categories.map(({ category, description }) => ({
               value: category,
               description,
             }))}
@@ -182,8 +181,8 @@ function AddUpdateViewPopup({
             onChange={useChange}
             disabled={popupType === 'view'}
             contents={[
-              { id: 'N', value: 'N', description: 'N' },
-              { id: 'Y', value: 'Y', description: 'Y' },
+              { value: 'N', description: 'N' },
+              { value: 'Y', description: 'Y' },
             ]}
           />
         </div>
@@ -207,13 +206,10 @@ function AddUpdateViewPopup({
             value={form.degreeOfUnderstanding}
             onChange={useChange}
             disabled={popupType === 'view'}
-            contents={degreeOfUnderstandings.map(
-              ({ id, grade, description }) => ({
-                id,
-                value: grade,
-                description,
-              }),
-            )}
+            contents={degreeOfUnderstandings.map(({ grade, description }) => ({
+              value: grade,
+              description,
+            }))}
           />
           <button
             onClick={(e) => {

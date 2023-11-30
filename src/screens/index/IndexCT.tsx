@@ -15,7 +15,7 @@ import {
 import { TypeKeyValueForm } from 'modules/types';
 import IndexPT from './IndexPT';
 
-function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
+function IndexCT({ uid }: TypeIndexCT): React.JSX.Element {
   const COLLECTION_NAME = 'Links';
   const navigate = useNavigate();
   const [popupType, setPopupType] = useState<string | undefined>();
@@ -170,6 +170,6 @@ function IndexCT({ uid }: typeIndexCT): React.JSX.Element {
   );
 }
 
-interface typeIndexCT extends UserState {}
+interface TypeIndexCT extends UserState {}
 
 export default IndexCT;
