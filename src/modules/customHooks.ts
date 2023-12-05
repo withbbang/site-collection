@@ -31,6 +31,7 @@ import {
   handleEncryptValue,
   handleCheckValidForm,
   handleTrimData,
+  handleCheckValidEmail,
 } from './utils';
 import { auth, db } from './configs';
 import { TypeKeyValueForm } from './types';
@@ -382,6 +383,7 @@ export function useSignUpHook(signUpForm: TypeKeyValueForm) {
     dispatch(handleSetIsLoading({ isLoading: true }));
     try {
       handleCheckValidForm(signUpForm);
+      handleCheckValidEmail(signUpForm.email as string);
 
       const {
         user: { uid },
@@ -416,6 +418,7 @@ export function useSignInHook(signInForm: TypeKeyValueForm) {
     dispatch(handleSetIsLoading({ isLoading: true }));
     try {
       handleCheckValidForm(signInForm);
+      handleCheckValidEmail(signInForm.email as string);
 
       const {
         user: { uid },

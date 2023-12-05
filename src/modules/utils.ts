@@ -65,6 +65,17 @@ export function handleSetUpperCaseFirstCharacter(value: string): string {
 }
 
 /**
+ * 이메일 유효성 검사 함수
+ * @param {string} email 이메일
+ * @returns
+ */
+export function handleCheckValidEmail(email: string) {
+  const reg = /^[A-Za-z0-9_.-]+@[A-Za-z0-9-]+\.[A-Za-z0-9-]+/;
+
+  if (!reg.test(email)) throw Error('Invalid Email');
+}
+
+/**
  * 회원가입 함수
  * @param {string} email 유저 이메일
  * @param {string} encryptedPassword 유저 암호화된 비밀번호
