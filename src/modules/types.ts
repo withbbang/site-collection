@@ -7,7 +7,7 @@ export interface TypeSVG {
 }
 
 export interface TypeKeyValueForm {
-  [key: string]: number | string;
+  [key: string]: number | string | boolean;
 }
 
 export interface TypeLink {
