@@ -72,14 +72,14 @@ function IndexPT({
             <input
               id="title"
               name="title"
-              value={form.title}
+              value={`${form.title}`}
               onChange={onChange}
             />
           </label>
           <Select
             id="category"
             name="category"
-            value={form.category}
+            value={`${form.category}`}
             onChange={onChange}
             contents={categories.map(({ category, description }) => ({
               value: category,
@@ -91,7 +91,7 @@ function IndexPT({
               <Select
                 id="degree"
                 name="degreeOfUnderstanding"
-                value={form.degreeOfUnderstanding}
+                value={`${form.degreeOfUnderstanding}`}
                 onChange={onChange}
                 contents={[
                   { value: -1, description: 'All' },
@@ -104,7 +104,7 @@ function IndexPT({
               <Select
                 id="bookmark"
                 name="bookmark"
-                value={form.bookmark}
+                value={`${form.bookmark}`}
                 onChange={onChange}
                 disabled={popupType === 'view'}
                 contents={[

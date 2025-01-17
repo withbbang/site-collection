@@ -82,7 +82,7 @@ function AddUpdateViewPopup({
 
   // 팝업 활성
   const handleActivePopup = () => {
-    document.body.style.position = 'fixed';
+    document.body.style.overflow = 'hidden';
 
     if (divRef.current) {
       divRef.current.style.transition = 'none';
@@ -102,7 +102,7 @@ function AddUpdateViewPopup({
 
   // 팝업 비활성
   const handleInActivePopup = () => {
-    document.body.style.position = 'unset';
+    document.body.style.overflow = 'unset';
 
     if (divRef.current) {
       divRef.current.style.top = `${yPos}px`;
@@ -136,7 +136,7 @@ function AddUpdateViewPopup({
             <input
               id="title"
               name="title"
-              value={form.title}
+              value={`${form.title}`}
               onChange={useChange}
               disabled={popupType === 'view'}
             />
@@ -155,7 +155,7 @@ function AddUpdateViewPopup({
                 className={styles.url}
                 id="url"
                 name="url"
-                value={form.url}
+                value={`${form.url}`}
                 onChange={useChange}
                 disabled={popupType === 'view'}
               />
@@ -166,7 +166,7 @@ function AddUpdateViewPopup({
           <Select
             id="category"
             name="category"
-            value={form.category}
+            value={`${form.category}`}
             onChange={useChange}
             disabled={popupType === 'view'}
             contents={categories.map(({ category, description }) => ({
@@ -177,7 +177,7 @@ function AddUpdateViewPopup({
           <Select
             id="bookmark"
             name="bookmark"
-            value={form.bookmark}
+            value={`${form.bookmark}`}
             onChange={useChange}
             disabled={popupType === 'view'}
             contents={[
@@ -193,7 +193,7 @@ function AddUpdateViewPopup({
             <textarea
               name="description"
               ref={textAreaRef}
-              value={form.description}
+              value={`${form.description}`}
               onChange={useChange}
               disabled={popupType === 'view'}
             />
@@ -203,7 +203,7 @@ function AddUpdateViewPopup({
           <Select
             id="degree"
             name="degreeOfUnderstanding"
-            value={form.degreeOfUnderstanding}
+            value={`${form.degreeOfUnderstanding}`}
             onChange={useChange}
             disabled={popupType === 'view'}
             contents={degreeOfUnderstandings.map(({ grade, description }) => ({
